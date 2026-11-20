@@ -116,6 +116,16 @@
                                 Sätt funktionsuttrycket lika med målvärdet <strong>b</strong> och lös ekvationen. Särskilt: <strong>F(t) = 0</strong> ger nollstället (när något tar slut).
                             </p>
                         </div>
+
+                        <div class="dark:bg-slate-950 bg-emerald-50 border border-emerald-500/50 rounded-xl p-3 space-y-1">
+                            <div class="text-sm font-semibold dark:text-emerald-400 text-emerald-700 flex items-center justify-between gap-2">
+                                <span>3. Skriv en funktion F(x) = kx + m</span>
+                                <span class="px-2 py-0.5 rounded bg-emerald-500/20 dark:text-emerald-300 text-emerald-800 text-xs font-bold shrink-0">Startvärde + förändring</span>
+                            </div>
+                            <p class="text-sm dark:text-slate-200 text-slate-800 font-normal leading-relaxed">
+                                <strong>m</strong> är startvärdet (vid x = 0, utan variabel) och <strong>k</strong> är förändringen per enhet (multipliceras med variabeln).
+                            </p>
+                        </div>
                     </div>
                 </div>
 
@@ -367,7 +377,7 @@
                             <span>Fas 1 avklarad! (10 / 10)</span>
                         </div>
                         <p class="text-sm dark:text-emerald-100 text-emerald-950 font-normal">
-                            Fas 2 (Direkt) är nu upplåst. Där tränar du på att beräkna eller lösa med funktionsnotering (t.ex. T(8) = 84 eller t = 8) och sedan tolka svaret.
+                            Fas 2 (Direkt) är nu upplåst. Där tränar du först på att beräkna, lösa ekvationer och tolka deluppgifterna steg för steg (1–5) och sedan på att skriva egna funktioner och använda dem (6–8).
                         </p>
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                             <button onclick="switchTab(2)" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold py-1.5 px-3 rounded-xl text-sm transition shadow-sm flex items-center justify-center gap-1.5">
@@ -387,19 +397,19 @@
         </section>
 
         <!-- ================================================================= -->
-        <!-- FLIK 2: FAS 2 — 2. Direkt (CONSISTENT F(a)=b OR x=a + INTERPRET)  -->
+        <!-- FLIK 2: FAS 2 — 2. Direkt (8 QUESTIONS: SEQUENTIAL a -> MC -> b -> MC) -->
         <!-- ================================================================= -->
         <section id="tab-content-2" class="tab-content h-full flex flex-col justify-between space-y-2 hidden">
             
             <div class="dark:bg-slate-950 bg-white border dark:border-slate-800 border-slate-300 rounded-xl px-4 py-1.5 flex justify-between items-center shrink-0 shadow-sm">
                 <div class="flex items-center gap-2.5">
                     <span class="px-2.5 py-0.5 bg-blue-100 dark:bg-blue-900/70 text-blue-800 dark:text-blue-300 font-semibold text-xs sm:text-sm rounded-full border border-blue-300 dark:border-blue-700" id="d2-mode-badge">
-                        Fas 2 • Direkt: Beräkna och tolka
+                        Fas 2 • Direkt: Beräkna, ställ upp och tolka
                     </span>
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <span class="text-sm dark:text-slate-300 text-slate-700 font-semibold" id="d2-score">Klarade: 0 / 6</span>
+                    <span class="text-sm dark:text-slate-300 text-slate-700 font-semibold" id="d2-score">Klarade: 0 / 8</span>
                 </div>
             </div>
 
@@ -420,11 +430,20 @@
 
                         <p class="text-base sm:text-lg dark:text-slate-100 text-slate-900 font-normal leading-relaxed" id="d2-scenario-text"></p>
 
-                        <div class="space-y-3 pt-2 border-t dark:border-slate-800 border-slate-200">
-                            <p class="text-base sm:text-lg font-bold dark:text-amber-300 text-amber-800 leading-relaxed" id="d2-single-prompt"></p>
+                        <!-- DELUPPGIFT a) & b) -->
+                        <div class="space-y-2.5 pt-2 border-t dark:border-slate-800 border-slate-200">
+                            <div id="d2-prompt-a-wrap" class="flex items-start gap-2.5">
+                                <span class="px-2 py-0.5 rounded-md bg-indigo-600/20 dark:text-indigo-300 text-indigo-700 border border-indigo-500/40 text-xs sm:text-sm font-bold shrink-0 mt-0.5">a)</span>
+                                <p class="text-base sm:text-lg font-bold dark:text-amber-300 text-amber-800 leading-snug" id="d2-prompt-a"></p>
+                            </div>
+
+                            <div id="d2-prompt-b-wrap" class="hidden flex items-start gap-2.5">
+                                <span class="px-2 py-0.5 rounded-md bg-indigo-600/20 dark:text-indigo-300 text-indigo-700 border border-indigo-500/40 text-xs sm:text-sm font-bold shrink-0 mt-0.5">b)</span>
+                                <p class="text-base sm:text-lg font-bold dark:text-amber-300 text-amber-800 leading-snug" id="d2-prompt-b"></p>
+                            </div>
 
                             <div id="d2-interpret-prompt" class="hidden pt-2 border-t dark:border-slate-800 border-slate-200">
-                                <p class="text-base sm:text-lg font-semibold dark:text-indigo-300 text-indigo-700 leading-relaxed">
+                                <p id="d2-interpret-prompt-text" class="text-base font-semibold dark:text-indigo-300 text-indigo-700 leading-snug">
                                     Tolka vad ditt svar betyder i det här sammanhanget.
                                 </p>
                             </div>
@@ -432,54 +451,87 @@
                     </div>
 
                     <!-- PROGRESSIVE ALGEBRAIC HINT BOX -->
-                    <div id="d2-hint-box" class="hidden dark:bg-amber-950/60 bg-amber-50 border border-amber-500/60 rounded-xl p-3 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1">
+                    <div id="d2-hint-box" class="hidden dark:bg-amber-950/60 bg-amber-50 border border-amber-500/60 rounded-xl p-2.5 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1">
                         <div class="font-bold text-xs uppercase tracking-wider dark:text-amber-400 text-amber-800 flex items-center gap-1.5">
-                            <i class="fa-solid fa-lightbulb"></i> Uppställning
+                            <i class="fa-solid fa-lightbulb"></i> Ledtråd
                         </div>
                         <p id="d2-hint-text" class="font-normal leading-snug"></p>
                     </div>
                 </div>
 
                 <!-- RIGHT COLUMN: DINA SVAR -->
-                <div class="md:col-span-7 dark:bg-slate-950 bg-white rounded-2xl p-4 border dark:border-slate-800 border-slate-300 flex flex-col justify-between shadow-sm space-y-3 overflow-hidden">
-                    <div class="space-y-3">
+                <div class="md:col-span-7 dark:bg-slate-950 bg-white rounded-2xl p-3.5 sm:p-4 border dark:border-slate-800 border-slate-300 flex flex-col justify-between shadow-sm space-y-2 overflow-hidden">
+                    <div class="space-y-2">
                         <div class="flex items-center justify-between border-b dark:border-slate-800 border-slate-200 pb-1.5">
                             <span class="text-xs font-bold uppercase tracking-wider dark:text-emerald-400 text-emerald-700 flex items-center gap-1.5">
                                 <i class="fa-solid fa-pen-to-square"></i> Dina svar
                             </span>
-                            <span id="d2-right-subhint" class="text-xs dark:text-slate-400 text-slate-500">Skriv t.ex. T(8) = 84 eller t = 8 och tolka sedan svaret</span>
+                            <span id="d2-right-subhint" class="text-xs dark:text-slate-400 text-slate-500">Skriv t.ex. K(8) = 3 000 i a)</span>
                         </div>
 
-                        <!-- STEP 1: CALCULATION INPUT WITH FUNCTION NOTATION -->
-                        <div class="space-y-2">
+                        <!-- DELUPPGIFT a) INPUT ROW -->
+                        <div id="d2-row-a" class="space-y-1.5">
                             <div class="flex flex-wrap items-center justify-between gap-2">
-                                <span id="d2-input-label" class="text-sm font-medium dark:text-slate-300 text-slate-700">
-                                    Skriv ditt svar med funktionsnotering:
+                                <span class="text-xs sm:text-sm font-semibold dark:text-slate-200 text-slate-800 flex items-center gap-1.5">
+                                    <span id="d2-badge-a" class="px-1.5 py-0.5 rounded bg-indigo-600/20 dark:text-indigo-300 text-indigo-700 border border-indigo-500/40 text-xs font-bold">a)</span>
+                                    <span id="d2-label-a">Beräkna funktionsvärdet:</span>
                                 </span>
-                                <div class="flex gap-2">
-                                    <button type="button" onclick="insertD2SinglePrefix('fn')" id="d2-single-fn-btn" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold text-sm transition shadow-sm">
-                                        T() =
+                                <div class="flex gap-1.5" id="d2-btns-a">
+                                    <button type="button" onclick="insertD2Prefix('a', 'fn')" id="d2-a-fn-btn" class="px-2.5 py-0.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold text-xs sm:text-sm transition shadow-sm">
+                                        K() =
                                     </button>
-                                    <button type="button" onclick="insertD2SinglePrefix('var')" id="d2-single-var-btn" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold text-sm transition shadow-sm">
-                                        t =
+                                    <button type="button" onclick="insertD2Prefix('a', 'var')" id="d2-a-var-btn" class="px-2.5 py-0.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold text-xs sm:text-sm transition shadow-sm">
+                                        x =
                                     </button>
                                 </div>
                             </div>
 
                             <div class="flex items-center gap-2">
-                                <input type="text" id="d2-single-input" autocomplete="off"
-                                       class="flex-grow dark:bg-slate-900 bg-slate-50 border dark:border-slate-700 border-slate-300 dark:text-white text-slate-900 font-semibold text-lg rounded-xl px-4 py-2 outline-none focus:border-indigo-500">
+                                <input type="text" id="d2-input-a" autocomplete="off"
+                                       class="flex-grow dark:bg-slate-900 bg-slate-50 border dark:border-slate-700 border-slate-300 dark:text-white text-slate-900 font-semibold text-base sm:text-lg rounded-xl px-3.5 py-1.5 outline-none focus:border-indigo-500">
                                 
-                                <button onclick="checkD2SingleAnswer()" id="d2-single-submit" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-base px-4 py-2 rounded-xl transition shadow-sm flex items-center justify-center gap-2 shrink-0">
+                                <button onclick="checkD2PartA()" id="d2-submit-a" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm sm:text-base px-3.5 py-1.5 rounded-xl transition shadow-sm flex items-center justify-center gap-1.5 shrink-0">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                    <span>Rätta</span>
+                                </button>
+                            </div>
+
+                            <!-- PERSISTENT INTERPRETATION SUMMARY FOR PART a) -->
+                            <div id="d2-a-interp-saved" class="hidden dark:bg-emerald-950/60 bg-emerald-50 border border-emerald-500/50 rounded-lg px-2.5 py-1 text-xs dark:text-emerald-200 text-emerald-950 flex items-start gap-1.5 leading-snug">
+                            </div>
+                        </div>
+
+                        <!-- DELUPPGIFT b) INPUT ROW (HIDDEN UNTIL a AND ITS INTERPRETATION ARE DONE) -->
+                        <div id="d2-row-b" class="hidden space-y-1.5 pt-2 border-t dark:border-slate-800/80 border-slate-200">
+                            <div class="flex flex-wrap items-center justify-between gap-2">
+                                <span class="text-xs sm:text-sm font-semibold dark:text-slate-200 text-slate-800 flex items-center gap-1.5">
+                                    <span id="d2-badge-b" class="px-1.5 py-0.5 rounded bg-indigo-600/20 dark:text-indigo-300 text-indigo-700 border border-indigo-500/40 text-xs font-bold">b)</span>
+                                    <span id="d2-label-b">Lös ekvationen:</span>
+                                </span>
+                                <div class="flex gap-1.5" id="d2-btns-b">
+                                    <button type="button" onclick="insertD2Prefix('b', 'fn')" id="d2-b-fn-btn" class="px-2.5 py-0.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold text-xs sm:text-sm transition shadow-sm">
+                                        K() =
+                                    </button>
+                                    <button type="button" onclick="insertD2Prefix('b', 'var')" id="d2-b-var-btn" class="px-2.5 py-0.5 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold text-xs sm:text-sm transition shadow-sm">
+                                        x =
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-2">
+                                <input type="text" id="d2-input-b" autocomplete="off"
+                                       class="flex-grow dark:bg-slate-900 bg-slate-50 border dark:border-slate-700 border-slate-300 dark:text-white text-slate-900 font-semibold text-base sm:text-lg rounded-xl px-3.5 py-1.5 outline-none focus:border-indigo-500">
+                                
+                                <button onclick="checkD2PartB()" id="d2-submit-b" class="bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-sm sm:text-base px-3.5 py-1.5 rounded-xl transition shadow-sm flex items-center justify-center gap-1.5 shrink-0">
                                     <i class="fa-solid fa-paper-plane"></i>
                                     <span>Rätta</span>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- STEP 2: MULTIPLE-CHOICE INTERPRETATION (HIDDEN UNTIL CALCULATION IS CORRECT) -->
-                        <div id="d2-interpret-box" class="hidden dark:bg-slate-900 bg-slate-100 border-2 border-indigo-500 rounded-xl p-3 space-y-2">
-                            <div class="text-sm font-semibold dark:text-white text-slate-900">
+                        <!-- MULTIPLE-CHOICE INTERPRETATION BOX (USED FIRST FOR a), THEN FOR b)) -->
+                        <div id="d2-interpret-box" class="hidden dark:bg-slate-900 bg-slate-100 border-2 border-indigo-500 rounded-xl p-2.5 space-y-1.5">
+                            <div id="d2-interpret-heading" class="text-xs sm:text-sm font-semibold dark:text-white text-slate-900">
                                 Välj rätt tolkning:
                             </div>
                             <div id="d2-meaning-options" class="grid grid-cols-1 gap-1.5">
@@ -489,24 +541,24 @@
 
                     <div class="space-y-2 shrink-0">
                         <!-- FEEDBACK BANNER -->
-                        <div id="d2-feedback-banner" class="hidden dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-2.5 text-sm dark:text-emerald-200 text-emerald-950 space-y-1.5">
+                        <div id="d2-feedback-banner" class="hidden dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-2 text-xs sm:text-sm dark:text-emerald-200 text-emerald-950 space-y-1.5">
                             <div class="font-normal flex items-start gap-2" id="d2-feedback-msg"></div>
                             <div id="d2-next-row" class="hidden flex justify-between items-center pt-1.5 border-t dark:border-emerald-900 border-emerald-300">
-                                <span class="text-xs sm:text-sm">Tryck Enter eller klicka:</span>
-                                <button onclick="generateNextDirectWorksheet()" id="d2-next-btn" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold px-3.5 py-1 rounded-lg text-sm transition shadow-sm flex items-center gap-1.5">
+                                <span class="text-xs">Tryck Enter eller klicka:</span>
+                                <button onclick="generateNextDirectWorksheet()" id="d2-next-btn" class="bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-semibold px-3.5 py-1 rounded-lg text-xs sm:text-sm transition shadow-sm flex items-center gap-1.5">
                                     <span>Nästa uppgift</span> <i class="fa-solid fa-arrow-right"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <!-- MILESTONE CHOICE BANNER (6 / 6) -->
+                        <!-- MILESTONE CHOICE BANNER (8 / 8) -->
                         <div id="d2-milestone-banner" class="hidden dark:bg-amber-950/90 bg-amber-100 border-2 border-amber-500 rounded-xl p-3 text-sm dark:text-amber-100 text-amber-950 space-y-2 shadow-md">
                             <div class="font-bold dark:text-amber-400 text-amber-800 text-base flex items-center gap-2">
                                 <i class="fa-solid fa-trophy text-amber-500"></i>
-                                <span>Fas 2 avklarad! (6 / 6)</span>
+                                <span>Fas 2 avklarad! (8 / 8)</span>
                             </div>
                             <p class="font-normal">
-                                Fas 3 (Tolka) är nu upplåst. Där tränar du på att koppla ihop text, startvärde, nollställe och formel.
+                                Fas 3 (Tolka) är nu upplåst. Där tränar du på att koppla ihop rena textfrågor med startvärde, nollställe och formel.
                             </p>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 <button onclick="switchTab(3)" class="w-full bg-amber-500 hover:bg-amber-400 text-slate-950 font-semibold px-3 py-1.5 rounded-lg text-sm transition shadow-sm flex items-center justify-center gap-1.5">
@@ -528,7 +580,7 @@
         </section>
 
         <!-- ================================================================= -->
-        <!-- FLIK 3: FAS 3 — 3. Tolka (EXACT ORIGINAL TOLKA PHASE)             -->
+        <!-- FLIK 3: FAS 3 — 3. Tolka                                          -->
         <!-- ================================================================= -->
         <section id="tab-content-3" class="tab-content h-full flex flex-col justify-between space-y-2 hidden">
             
@@ -601,7 +653,7 @@
             <div class="dark:bg-slate-950 bg-white border dark:border-slate-800 border-slate-300 rounded-xl px-4 py-1.5 flex justify-between items-center shrink-0 shadow-sm">
                 <div class="flex items-center gap-2.5">
                     <span class="px-2.5 py-0.5 bg-amber-500/20 text-amber-800 dark:text-amber-400 font-semibold text-xs sm:text-sm rounded-full border border-amber-500/40">
-                        Fas 4 • Utmaning: Jämförelser, skillnader &amp; intervall
+                        Fas 4 • Utmaning: Jämförelser, intervall &amp; funktionsmodeller
                     </span>
                 </div>
 
@@ -655,11 +707,11 @@
                             </span>
                         </div>
 
-                        <!-- PART A: CALCULATION INPUT -->
+                        <!-- PART A: CALCULATION / FORMULA INPUT -->
                         <div class="space-y-2">
                             <div class="flex flex-wrap items-center justify-between gap-2">
                                 <span class="text-sm font-medium dark:text-slate-300 text-slate-700" id="f5-format-hint">
-                                    Skriv ditt svar (ange även enhet):
+                                    Skriv ditt svar:
                                 </span>
                                 <div class="flex gap-2" id="f5-quick-btns">
                                     <button type="button" onclick="insertF5FuncPrefix()" id="f5-btn-fn" class="px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded-lg font-semibold text-sm transition shadow-sm">
@@ -954,7 +1006,7 @@
             btn.classList.add('pulse-hint');
         }
 
-        /* ---------------- DYNAMIC LINEAR SCENARIO ENGINE (POSITIVE & NEGATIVE MODELS) ---------------- */
+        /* ---------------- DYNAMIC LINEAR SCENARIO ENGINE (CURATED CLEAN PAIRS) ---------------- */
         const LINEAR_MODEL_TEMPLATES = [
             // --- POSITIVE SLOPE (k > 0) ---
             {
@@ -970,9 +1022,13 @@
                 xCountable: false,
                 yDisplayUnit: 'kr',
                 yUnits: ['kr', 'kronor'],
-                kRange: [345, 385, 425, 465],
-                mRange: [175, 225, 280, 340],
-                xRange: [4, 6, 7, 8, 9, 11],
+                pairs: [
+                    { k: 250, m: 150 },
+                    { k: 300, m: 200 },
+                    { k: 350, m: 200 },
+                    { k: 400, m: 250 }
+                ],
+                xRange: [2, 3, 4, 5, 6, 7],
                 askForYText: (x) => `Hur mycket kostar det att hyra surfbrädan i ${x} ${x === 1 ? 'dag' : 'dagar'}?`,
                 askForXText: (y) => `Hur många dagar kan man hyra surfbrädan för ${formatSvNum(y)} kr?`,
                 askStartText: `Hur stor är startavgiften för att hyra surfbrädan?`,
@@ -997,9 +1053,13 @@
                 xCountable: false,
                 yDisplayUnit: 'kr',
                 yUnits: ['kr', 'kronor'],
-                kRange: [65, 75, 85, 95],
-                mRange: [120, 145, 165, 190],
-                xRange: [5, 6, 7, 8, 9, 12],
+                pairs: [
+                    { k: 60, m: 120 },
+                    { k: 75, m: 150 },
+                    { k: 80, m: 140 },
+                    { k: 90, m: 150 }
+                ],
+                xRange: [2, 3, 4, 5, 6, 8],
                 askForYText: (x) => `Hur mycket kostar det att hyra kanoten i ${x} ${x === 1 ? 'timme' : 'timmar'}?`,
                 askForXText: (y) => `Hur många timmar kan man hyra kanoten för ${formatSvNum(y)} kr?`,
                 askStartText: `Hur stor är startavgiften för att hyra kanoten?`,
@@ -1024,9 +1084,13 @@
                 xCountable: true,
                 yDisplayUnit: 'kr',
                 yUnits: ['kr', 'kronor'],
-                kRange: [185, 215, 245, 275],
-                mRange: [45, 65, 85, 95],
-                xRange: [4, 5, 6, 7, 8, 9],
+                pairs: [
+                    { k: 150, m: 50 },
+                    { k: 180, m: 60 },
+                    { k: 200, m: 50 },
+                    { k: 250, m: 75 }
+                ],
+                xRange: [2, 3, 4, 5, 6, 7],
                 askForYText: (x) => `Hur mycket kostar det att beställa ${x} ${x === 1 ? 'konsertbiljett' : 'konsertbiljetter'}?`,
                 askForXText: (y) => `Hur många konsertbiljetter får man för ${formatSvNum(y)} kr?`,
                 askStartText: `Hur stor är expeditionsavgiften när man beställer 0 biljetter?`,
@@ -1051,9 +1115,13 @@
                 xCountable: false,
                 yDisplayUnit: '°C',
                 yUnits: ['°c', 'c', 'grader', 'grad'],
-                kRange: [8, 9, 11, 12],
-                mRange: [19, 20, 23, 24],
-                xRange: [6, 7, 8, 9, 11, 13],
+                pairs: [
+                    { k: 8, m: 20 },
+                    { k: 10, m: 20 },
+                    { k: 12, m: 20 },
+                    { k: 15, m: 25 }
+                ],
+                xRange: [3, 4, 5, 6, 8, 10],
                 askForYText: (t) => `Vilken temperatur har ugnen efter ${t} minuter?`,
                 askForXText: (y) => `Efter hur många minuter når ugnen temperaturen ${formatSvNum(y)} °C?`,
                 askStartText: `Vilken starttemperatur har ugnen när den sätts på?`,
@@ -1078,9 +1146,13 @@
                 xCountable: false,
                 yDisplayUnit: 'Wh',
                 yUnits: ['wh'],
-                kRange: [14, 16, 18, 22],
-                mRange: [115, 130, 145, 160],
-                xRange: [8, 11, 12, 14, 15, 18],
+                pairs: [
+                    { k: 12, m: 120 },
+                    { k: 15, m: 120 },
+                    { k: 15, m: 150 },
+                    { k: 20, m: 140 }
+                ],
+                xRange: [3, 4, 5, 6, 8, 10],
                 askForYText: (t) => `Hur många Wh energi finns det i batteriet efter ${t} minuters laddning?`,
                 askForXText: (y) => `Efter hur många minuters laddning innehåller batteriet ${formatSvNum(y)} Wh?`,
                 askStartText: `Hur många Wh energi fanns i batteriet innan laddningen startade?`,
@@ -1093,7 +1165,7 @@
                 zeroQuestion: null
             },
 
-            // --- NEGATIVE SLOPE (k < 0) ---
+            // --- NEGATIVE SLOPE (k < 0, every pair has an exact integer root m / |k|) ---
             {
                 id: 'vattentank',
                 direction: 'dec',
@@ -1107,9 +1179,13 @@
                 xCountable: false,
                 yDisplayUnit: 'liter',
                 yUnits: ['liter', 'l'],
-                kRange: [-24, -28, -32, -35],
-                mRange: [560, 620, 680, 750],
-                xRange: [5, 7, 8, 9, 11, 12],
+                pairs: [
+                    { k: -20, m: 400 },
+                    { k: -25, m: 500 },
+                    { k: -30, m: 480 },
+                    { k: -30, m: 600 }
+                ],
+                xRange: [4, 5, 6, 8, 10, 12],
                 askForYText: (t) => `Hur många liter vatten finns det kvar i tanken efter ${t} minuter?`,
                 askForXText: (y) => `Efter hur många minuter finns det ${formatSvNum(y)} liter vatten kvar i tanken?`,
                 askStartText: `Hur många liter vatten fanns det i tanken från början?`,
@@ -1139,9 +1215,12 @@
                 xCountable: false,
                 yDisplayUnit: 'procent',
                 yUnits: ['procent', '%'],
-                kRange: [-6, -7, -8, -9],
-                mRange: [100],
-                xRange: [4, 6, 7, 8, 9, 11],
+                pairs: [
+                    { k: -5, m: 100 },
+                    { k: -10, m: 100 },
+                    { k: -8, m: 80 }
+                ],
+                xRange: [2, 3, 4, 5, 6, 7],
                 askForYText: (t) => `Hur många procent är kvar av batteriet efter ${t} timmar?`,
                 askForXText: (y) => `Efter hur många timmar är batterinivån ${formatSvNum(y)} procent?`,
                 askStartText: `Hur många procent var batteriet laddat från början?`,
@@ -1171,9 +1250,13 @@
                 xCountable: true,
                 yDisplayUnit: 'kr',
                 yUnits: ['kr', 'kronor'],
-                kRange: [-68, -72, -78, -85],
-                mRange: [850, 960, 1100, 1250],
-                xRange: [4, 5, 6, 7, 8, 9],
+                pairs: [
+                    { k: -75, m: 750 },
+                    { k: -75, m: 900 },
+                    { k: -80, m: 800 },
+                    { k: -80, m: 960 }
+                ],
+                xRange: [3, 4, 5, 6, 7, 8],
                 askForYText: (x) => `Hur mycket pengar finns det kvar på presentkortet efter ${x} köpta luncher?`,
                 askForXText: (y) => `Hur många luncher har man köpt när det återstår ${formatSvNum(y)} kr på presentkortet?`,
                 askStartText: `Hur mycket pengar var presentkortet laddat med från början?`,
@@ -1203,9 +1286,13 @@
                 xCountable: true,
                 yDisplayUnit: 'kr',
                 yUnits: ['kr', 'kronor'],
-                kRange: [-26, -28, -32, -34],
-                mRange: [540, 640, 720, 800],
-                xRange: [6, 7, 8, 9, 11, 13],
+                pairs: [
+                    { k: -25, m: 500 },
+                    { k: -30, m: 480 },
+                    { k: -30, m: 600 },
+                    { k: -32, m: 640 }
+                ],
+                xRange: [4, 5, 6, 8, 10, 12],
                 askForYText: (x) => `Hur mycket pengar finns det kvar på busskortet efter ${x} resor?`,
                 askForXText: (y) => `Hur många resor har man gjort när det återstår ${formatSvNum(y)} kr på busskortet?`,
                 askStartText: `Hur mycket pengar var busskortet laddat med från början?`,
@@ -1235,9 +1322,13 @@
                 xCountable: false,
                 yDisplayUnit: 'kg',
                 yUnits: ['kg', 'kilogram'],
-                kRange: [-18, -22, -24, -26],
-                mRange: [460, 520, 580, 650],
-                xRange: [6, 7, 8, 9, 11, 14],
+                pairs: [
+                    { k: -15, m: 450 },
+                    { k: -20, m: 440 },
+                    { k: -20, m: 500 },
+                    { k: -25, m: 500 }
+                ],
+                xRange: [4, 5, 6, 8, 10, 12],
                 askForYText: (t) => `Hur många kg bränsle finns det kvar i behållaren efter ${t} timmars drift?`,
                 askForXText: (y) => `Efter hur många timmars drift återstår ${formatSvNum(y)} kg bränsle i behållaren?`,
                 askStartText: `Hur många kg bränsle fanns i behållaren från början?`,
@@ -1256,6 +1347,301 @@
             }
         ];
 
+        /* ---------------- WRITE-YOUR-OWN-FUNCTION TEMPLATES (CURATED CLEAN PAIRS) ---------------- */
+        const WRITE_FUNCTION_TEMPLATES = [
+            // Type 1: Increasing linear (k > 0, m > 0)
+            {
+                id: 'wf_hantverkare',
+                wfType: 'incLinear',
+                fnName: 'K',
+                varName: 't',
+                unitSing: 'timme',
+                unitPlur: 'timmar',
+                xUnits: ['timme', 'timmar', 'h'],
+                xCountable: false,
+                yDisplayUnit: 'kr',
+                yUnits: ['kr', 'kronor'],
+                startDesc: 'framkörningsavgiften',
+                rateDesc: 'timpriset',
+                pairs: [
+                    { k: 450, m: 300 },
+                    { k: 500, m: 350 },
+                    { k: 550, m: 400 },
+                    { k: 480, m: 320 }
+                ],
+                xRange: [3, 4, 5, 6, 7],
+                scenario: (k, m) => `En hantverkare tar ${formatSvNum(m)} kr i framkörningsavgift och ${formatSvNum(k)} kr per timme.`,
+                promptA: `Skriv en funktion K(t) som beskriver den totala kostnaden i kronor efter t timmars arbete.`,
+                ansDisplayA: (k, m) => `K(t) = ${formatSvNum(k)}t + ${formatSvNum(m)}`,
+                hintA: (k, m) => `Startavgiften (${formatSvNum(m)} kr) står ensamt utan t, och timpriset (${formatSvNum(k)} kr) multipliceras med t: K(t) = ${formatSvNum(k)}t + ${formatSvNum(m)}.`,
+                askForYText: (t) => `Använd din funktion för att beräkna hur mycket ett arbete som tar ${t} timmar kostar.`,
+                askForXText: (y) => `Använd din funktion för att bestämma hur många timmar arbetet tog om den totala kostnaden blev ${formatSvNum(y)} kr.`,
+                meaningsWithApply: (k, m, xB, yB) => [
+                    { text: `Startavgiften är ${formatSvNum(m)} kr, priset ökar med ${formatSvNum(k)} kr/timme och ${xB} timmar kostar ${formatSvNum(yB)} kr.`, isCorrect: true },
+                    { text: `Startavgiften är ${formatSvNum(k)} kr, priset ökar med ${formatSvNum(m)} kr/timme och ${xB} timmar kostar ${formatSvNum(yB)} kr.`, isCorrect: false },
+                    { text: `Efter ${formatSvNum(m)} timmar är kostnaden ${formatSvNum(k)} kr, och ${xB} timmar kostar ${formatSvNum(yB)} kr.`, isCorrect: false }
+                ]
+            },
+            {
+                id: 'wf_gym',
+                wfType: 'incLinear',
+                fnName: 'K',
+                varName: 'x',
+                unitSing: 'månad',
+                unitPlur: 'månader',
+                xUnits: ['månad', 'månader', 'mån'],
+                xCountable: false,
+                yDisplayUnit: 'kr',
+                yUnits: ['kr', 'kronor'],
+                startDesc: 'engångsavgiften',
+                rateDesc: 'månadsavgiften',
+                pairs: [
+                    { k: 250, m: 150 },
+                    { k: 250, m: 200 },
+                    { k: 300, m: 150 },
+                    { k: 280, m: 200 }
+                ],
+                xRange: [3, 4, 5, 6, 8],
+                scenario: (k, m) => `Ett gym har en engångsavgift på ${formatSvNum(m)} kr för medlemskortet och en månadsavgift på ${formatSvNum(k)} kr per månad.`,
+                promptA: `Skriv en funktion K(x) som beskriver den totala kostnaden i kronor efter x månader.`,
+                ansDisplayA: (k, m) => `K(x) = ${formatSvNum(k)}x + ${formatSvNum(m)}`,
+                hintA: (k, m) => `Engångsavgiften (${formatSvNum(m)} kr) betalas en gång utan x, och ${formatSvNum(k)} kr läggs till för varje månad x: K(x) = ${formatSvNum(k)}x + ${formatSvNum(m)}.`,
+                askForYText: (x) => `Använd din funktion för att beräkna vad medlemskapet kostar sammanlagt efter ${x} månader.`,
+                askForXText: (y) => `Använd din funktion för att ta reda på hur många månader man har tränat om totala kostnaden är ${formatSvNum(y)} kr.`,
+                meaningsWithApply: (k, m, xB, yB) => [
+                    { text: `Engångsavgiften är ${formatSvNum(m)} kr, kostnaden ökar med ${formatSvNum(k)} kr/månad och ${xB} månader kostar ${formatSvNum(yB)} kr.`, isCorrect: true },
+                    { text: `Engångsavgiften är ${formatSvNum(k)} kr, kostnaden ökar med ${formatSvNum(m)} kr/månad och ${xB} månader kostar ${formatSvNum(yB)} kr.`, isCorrect: false },
+                    { text: `Efter ${formatSvNum(yB)} månader är den totala kostnaden ${xB} kr.`, isCorrect: false }
+                ]
+            },
+            {
+                id: 'wf_taxi',
+                wfType: 'incLinear',
+                fnName: 'K',
+                varName: 'x',
+                unitSing: 'kilometer',
+                unitPlur: 'kilometer',
+                xUnits: ['kilometer', 'km'],
+                xCountable: false,
+                yDisplayUnit: 'kr',
+                yUnits: ['kr', 'kronor'],
+                startDesc: 'startavgiften',
+                rateDesc: 'kilometerpriset',
+                pairs: [
+                    { k: 15, m: 50 },
+                    { k: 18, m: 60 },
+                    { k: 20, m: 50 },
+                    { k: 25, m: 60 }
+                ],
+                xRange: [4, 5, 6, 8, 10],
+                scenario: (k, m) => `En taxiresa kostar ${formatSvNum(m)} kr i startavgift plus ${formatSvNum(k)} kr per kilometer.`,
+                promptA: `Skriv en funktion K(x) som beskriver priset i kronor för en resa på x kilometer.`,
+                ansDisplayA: (k, m) => `K(x) = ${formatSvNum(k)}x + ${formatSvNum(m)}`,
+                hintA: (k, m) => `Startavgiften (${formatSvNum(m)} kr) står ensamt utan x, och ${formatSvNum(k)} kr multipliceras med varje kilometer x: K(x) = ${formatSvNum(k)}x + ${formatSvNum(m)}.`,
+                askForYText: (x) => `Använd din funktion för att beräkna vad en taxiresa på ${x} kilometer kostar.`,
+                askForXText: (y) => `Använd din funktion för att beräkna hur många kilometer man åkt om resan kostade ${formatSvNum(y)} kr.`,
+                meaningsWithApply: (k, m, xB, yB) => [
+                    { text: `Startavgiften är ${formatSvNum(m)} kr, priset ökar med ${formatSvNum(k)} kr/km och ${xB} km kostar ${formatSvNum(yB)} kr.`, isCorrect: true },
+                    { text: `Startavgiften är ${formatSvNum(k)} kr, priset ökar med ${formatSvNum(m)} kr/km och ${xB} km kostar ${formatSvNum(yB)} kr.`, isCorrect: false },
+                    { text: `För ${xB} kr kan man åka ${formatSvNum(yB)} kilometer.`, isCorrect: false }
+                ]
+            },
+
+            // Type 2: Decreasing linear (k < 0, m > 0)
+            {
+                id: 'wf_vattentank',
+                wfType: 'decLinear',
+                fnName: 'V',
+                varName: 't',
+                unitSing: 'minut',
+                unitPlur: 'minuter',
+                xUnits: ['minut', 'minuter', 'min'],
+                xCountable: false,
+                yDisplayUnit: 'liter',
+                yUnits: ['liter', 'l'],
+                startDesc: 'startvolymen i tanken',
+                rateDesc: 'tömningshastigheten',
+                pairs: [
+                    { k: -25, m: 600 },
+                    { k: -30, m: 720 },
+                    { k: -40, m: 800 },
+                    { k: -30, m: 900 }
+                ],
+                xRange: [4, 5, 6, 8, 10],
+                scenario: (k, m) => `En vattentank innehåller ${formatSvNum(m)} liter vatten från början och töms med ${formatSvNum(Math.abs(k))} liter per minut.`,
+                promptA: `Skriv en funktion V(t) som visar hur många liter vatten som finns kvar i tanken efter t minuter.`,
+                ansDisplayA: (k, m) => `V(t) = ${formatSvNum(m)} ${MINUS} ${formatSvNum(Math.abs(k))}t`,
+                hintA: (k, m) => `Startvolymen (${formatSvNum(m)} liter) står ensamt utan t, och minskningen (${formatSvNum(Math.abs(k))} liter/min) dras ifrån med t: V(t) = ${formatSvNum(m)} ${MINUS} ${formatSvNum(Math.abs(k))}t.`,
+                askForYText: (t) => `Använd din funktion för att beräkna hur många liter vatten som finns kvar efter ${t} minuter.`,
+                askForXText: (y) => `Använd din funktion för att bestämma efter hur många minuter det finns ${formatSvNum(y)} liter vatten kvar.`,
+                meaningsWithApply: (k, m, xB, yB) => [
+                    { text: `Tanken startar med ${formatSvNum(m)} liter, minskar med ${formatSvNum(Math.abs(k))} liter/min och efter ${xB} min återstår ${formatSvNum(yB)} liter.`, isCorrect: true },
+                    { text: `Tanken fylls på med ${formatSvNum(Math.abs(k))} liter/min från ${formatSvNum(m)} liter och rymmer ${formatSvNum(yB)} liter efter ${xB} min.`, isCorrect: false },
+                    { text: `Efter ${formatSvNum(yB)} minuter finns det ${xB} liter vatten kvar i tanken.`, isCorrect: false }
+                ]
+            },
+            {
+                id: 'wf_presentkort',
+                wfType: 'decLinear',
+                fnName: 'S',
+                varName: 'x',
+                unitSing: 'lunch',
+                unitPlur: 'luncher',
+                xUnits: ['lunch', 'luncher'],
+                xCountable: true,
+                yDisplayUnit: 'kr',
+                yUnits: ['kr', 'kronor'],
+                startDesc: 'startsaldot på kortet',
+                rateDesc: 'lunchpriset',
+                pairs: [
+                    { k: -75, m: 750 },
+                    { k: -75, m: 900 },
+                    { k: -80, m: 800 },
+                    { k: -80, m: 960 }
+                ],
+                xRange: [3, 4, 5, 6, 8],
+                scenario: (k, m) => `Ett presentkort på en lunchrestaurang är laddat med ${formatSvNum(m)} kr och varje lunch kostar ${formatSvNum(Math.abs(k))} kr.`,
+                promptA: `Skriv en funktion S(x) som beskriver hur mycket pengar som finns kvar på kortet efter x köpta luncher.`,
+                ansDisplayA: (k, m) => `S(x) = ${formatSvNum(m)} ${MINUS} ${formatSvNum(Math.abs(k))}x`,
+                hintA: (k, m) => `Startsaldot (${formatSvNum(m)} kr) står ensamt utan x, och ${formatSvNum(Math.abs(k))} kr dras ifrån för varje lunch x: S(x) = ${formatSvNum(m)} ${MINUS} ${formatSvNum(Math.abs(k))}x.`,
+                askForYText: (x) => `Använd din funktion för att beräkna hur mycket pengar som återstår på kortet efter ${x} köpta luncher.`,
+                askForXText: (y) => `Använd din funktion för att ta reda på hur många luncher som har köpts när saldot är ${formatSvNum(y)} kr.`,
+                meaningsWithApply: (k, m, xB, yB) => [
+                    { text: `Kortet startar på ${formatSvNum(m)} kr, minskar med ${formatSvNum(Math.abs(k))} kr/lunch och efter ${xB} luncher återstår ${formatSvNum(yB)} kr.`, isCorrect: true },
+                    { text: `Varje lunch kostar ${formatSvNum(m)} kr och efter ${xB} luncher återstår ${formatSvNum(yB)} kr.`, isCorrect: false },
+                    { text: `Efter ${formatSvNum(yB)} luncher finns det ${xB} kr kvar på kortet.`, isCorrect: false }
+                ]
+            },
+            {
+                id: 'wf_bransle',
+                wfType: 'decLinear',
+                fnName: 'M',
+                varName: 't',
+                unitSing: 'timme',
+                unitPlur: 'timmar',
+                xUnits: ['timme', 'timmar', 'h'],
+                xCountable: false,
+                yDisplayUnit: 'kg',
+                yUnits: ['kg', 'kilogram'],
+                startDesc: 'startmängden bränsle',
+                rateDesc: 'förbrukningen per timme',
+                pairs: [
+                    { k: -15, m: 450 },
+                    { k: -20, m: 480 },
+                    { k: -20, m: 600 },
+                    { k: -25, m: 500 }
+                ],
+                xRange: [4, 5, 6, 8, 10],
+                scenario: (k, m) => `En bränsletank innehåller ${formatSvNum(m)} kg bränsle från början och förbrukar ${formatSvNum(Math.abs(k))} kg per timme.`,
+                promptA: `Skriv en funktion M(t) som beskriver hur många kg bränsle som återstår efter t timmars drift.`,
+                ansDisplayA: (k, m) => `M(t) = ${formatSvNum(m)} ${MINUS} ${formatSvNum(Math.abs(k))}t`,
+                hintA: (k, m) => `Startmängden (${formatSvNum(m)} kg) står ensamt utan t, och förbrukningen (${formatSvNum(Math.abs(k))} kg/timme) dras ifrån med t: M(t) = ${formatSvNum(m)} ${MINUS} ${formatSvNum(Math.abs(k))}t.`,
+                askForYText: (t) => `Använd din funktion för att beräkna hur många kg bränsle som finns kvar efter ${t} timmars drift.`,
+                askForXText: (y) => `Använd din funktion för att bestämma efter hur många timmar det återstår ${formatSvNum(y)} kg bränsle.`,
+                meaningsWithApply: (k, m, xB, yB) => [
+                    { text: `Tanken startar med ${formatSvNum(m)} kg, minskar med ${formatSvNum(Math.abs(k))} kg/timme och efter ${xB} timmar återstår ${formatSvNum(yB)} kg.`, isCorrect: true },
+                    { text: `Tanken fylls på med ${formatSvNum(Math.abs(k))} kg/timme och innehåller ${formatSvNum(yB)} kg efter ${xB} timmar.`, isCorrect: false },
+                    { text: `Efter ${formatSvNum(yB)} timmar återstår ${xB} kg bränsle.`, isCorrect: false }
+                ]
+            },
+
+            // Type 3: Proportional (k > 0, m = 0 — clean whole-number results)
+            {
+                id: 'wf_elbil',
+                wfType: 'prop',
+                fnName: 'E',
+                varName: 'x',
+                unitSing: 'mil',
+                unitPlur: 'mil',
+                xUnits: ['mil'],
+                xCountable: false,
+                yDisplayUnit: 'kWh',
+                yUnits: ['kwh'],
+                startDesc: 'startförbrukningen (0 kWh)',
+                rateDesc: 'energiåtgången per mil',
+                pairs: [
+                    { k: 1.5, m: 0 },
+                    { k: 2.5, m: 0 }
+                ],
+                xRange: [4, 6, 8, 10, 12],
+                scenario: (k) => `En elbil förbrukar i genomsnitt ${formatSvNum(k)} kWh per mil (ingen fast startförbrukning).`,
+                promptA: `Skriv en funktion E(x) som anger energiåtgången i kWh efter x mil.`,
+                ansDisplayA: (k) => `E(x) = ${formatSvNum(k)}x`,
+                hintA: (k) => `Det finns inget fast startvärde (m = 0), utan energiåtgången är ${formatSvNum(k)} kWh multiplicerat med antalet mil x: E(x) = ${formatSvNum(k)}x.`,
+                askForYText: (x) => `Använd din funktion för att beräkna hur många kWh energi bilen förbrukar på ${x} mil.`,
+                askForXText: (y) => `Använd din funktion för att beräkna hur många mil bilen har kört när den har förbrukat ${formatSvNum(y)} kWh.`,
+                meaningsWithApply: (k, _m, xB, yB) => [
+                    { text: `Energiåtgången startar på 0 kWh, ökar med ${formatSvNum(k)} kWh/mil och efter ${xB} mil har bilen förbrukat ${formatSvNum(yB)} kWh.`, isCorrect: true },
+                    { text: `Bilen har en startförbrukning på ${formatSvNum(k)} kWh och efter ${formatSvNum(yB)} mil har den förbrukat ${xB} kWh.`, isCorrect: false },
+                    { text: `Efter ${formatSvNum(k)} mil har bilen förbrukat ${formatSvNum(yB)} kWh.`, isCorrect: false }
+                ]
+            },
+            {
+                id: 'wf_lon',
+                wfType: 'prop',
+                fnName: 'L',
+                varName: 't',
+                unitSing: 'timme',
+                unitPlur: 'timmar',
+                xUnits: ['timme', 'timmar', 'h'],
+                xCountable: false,
+                yDisplayUnit: 'kr',
+                yUnits: ['kr', 'kronor'],
+                startDesc: 'grundersättningen (0 kr)',
+                rateDesc: 'timlönen',
+                pairs: [
+                    { k: 120, m: 0 },
+                    { k: 130, m: 0 },
+                    { k: 140, m: 0 },
+                    { k: 150, m: 0 }
+                ],
+                xRange: [4, 5, 6, 8, 10],
+                scenario: (k) => `Vid ett sommarjobb är timlönen ${formatSvNum(k)} kr per timme utan någon fast grundersättning.`,
+                promptA: `Skriv en funktion L(t) som beskriver den totala lönen i kronor efter t arbetade timmar.`,
+                ansDisplayA: (k) => `L(t) = ${formatSvNum(k)}t`,
+                hintA: (k) => `Utan fast grundersättning (m = 0) blir lönen timlönen ${formatSvNum(k)} kr multiplicerad med antalet timmar t: L(t) = ${formatSvNum(k)}t.`,
+                askForYText: (t) => `Använd din funktion för att beräkna vad lönen blir efter ${t} arbetade timmar.`,
+                askForXText: (y) => `Använd din funktion för att bestämma hur många timmar man har arbetat om lönen blir ${formatSvNum(y)} kr.`,
+                meaningsWithApply: (k, _m, xB, yB) => [
+                    { text: `Lönen startar på 0 kr, ökar med ${formatSvNum(k)} kr/timme och ${xB} timmar ger ${formatSvNum(yB)} kr.`, isCorrect: true },
+                    { text: `Man får ${formatSvNum(k)} kr i startbonus och efter ${formatSvNum(yB)} timmar är lönen ${xB} kr.`, isCorrect: false },
+                    { text: `Efter ${formatSvNum(k)} timmar är lönen ${formatSvNum(yB)} kr.`, isCorrect: false }
+                ]
+            },
+            {
+                id: 'wf_hastighet',
+                wfType: 'prop',
+                fnName: 's',
+                varName: 't',
+                unitSing: 'timme',
+                unitPlur: 'timmar',
+                xUnits: ['timme', 'timmar', 'h'],
+                xCountable: false,
+                yDisplayUnit: 'km',
+                yUnits: ['km', 'kilometer'],
+                startDesc: 'startsträckan (0 km)',
+                rateDesc: 'hastigheten',
+                pairs: [
+                    { k: 70, m: 0 },
+                    { k: 80, m: 0 },
+                    { k: 85, m: 0 },
+                    { k: 90, m: 0 }
+                ],
+                xRange: [2, 3, 4, 5, 6],
+                scenario: (k) => `En bil kör med den konstanta hastigheten ${formatSvNum(k)} km/h på en motorväg.`,
+                promptA: `Skriv en funktion s(t) som anger sträckan i kilometer bilen har kört på t timmar.`,
+                ansDisplayA: (k) => `s(t) = ${formatSvNum(k)}t`,
+                hintA: (k) => `Sträckan vid t = 0 är 0 km (m = 0) och ökar med ${formatSvNum(k)} km för varje timme t: s(t) = ${formatSvNum(k)}t.`,
+                askForYText: (t) => `Använd din funktion för att beräkna hur många kilometer bilen kör på ${t} timmar.`,
+                askForXText: (y) => `Använd din funktion för att beräkna hur många timmar det tar att köra ${formatSvNum(y)} kilometer.`,
+                meaningsWithApply: (k, _m, xB, yB) => [
+                    { text: `Sträckan startar på 0 km, ökar med ${formatSvNum(k)} km/timme och på ${xB} timmar kör bilen ${formatSvNum(yB)} km.`, isCorrect: true },
+                    { text: `Bilen har redan kört ${formatSvNum(k)} km vid start och kör ${xB} km på ${formatSvNum(yB)} timmar.`, isCorrect: false },
+                    { text: `Det tar ${formatSvNum(k)} timmar att köra ${formatSvNum(yB)} km.`, isCorrect: false }
+                ]
+            }
+        ];
+
         function pickRandom(arr) {
             return arr[Math.floor(Math.random() * arr.length)];
         }
@@ -1270,8 +1656,9 @@
                 if (filtered.length > 0) pool = filtered;
             }
             const tpl = pickRandom(pool);
-            const k = pickRandom(tpl.kRange);
-            const m = pickRandom(tpl.mRange);
+            const pair = pickRandom(tpl.pairs);
+            const k = pair.k;
+            const m = pair.m;
 
             let x = pickRandom(tpl.xRange);
             if (allowZeroOrRoot && Math.random() < 0.22) {
@@ -1299,7 +1686,7 @@
         let globalConsecutiveMistakes = 0;
         let lockTimerInterval = null;
 
-        // Demo Tab 0 State (Linear Increasing, Linear Decreasing, Quadratic Demo)
+        // Demo Tab 0 State
         const DEMO_SCENARIOS = {
             surfbrada: {
                 badge: 'Linjär ökande modell',
@@ -1394,21 +1781,24 @@
         let f0RecentDirs = [];
         let f0LastScenarioId = null;
 
-        // Fas 2 State (6/6: Consistent F(a) = b or var = a + Multiple-Choice Interpretation, balanced positive & negative functions)
+        // Fas 2 State (8/8: Q1–5 Sequential a -> MC_a -> b -> MC_b, Q6–8 Write Function a + Pure Text Apply b + MC)
         let d2Current = null;
         let d2Score = 0;
-        let d2Target = 6;
-        let d2SingleCalcSolved = false;
+        let d2Target = 8;
+        let d2SolvedA = false;
+        let d2InterpretedA = false;
+        let d2SolvedB = false;
         let d2QuestionCompleted = false;
         let d2MilestoneShown = false;
-        let d2WrongCount = 0;
+        let d2WrongCountA = 0;
+        let d2WrongCountB = 0;
         let d2LastScenarioId = null;
-        let d2TypeQueue = [];
-        let d2RecentTypes = [];
         let d2DirQueue = [];
         let d2RecentDirs = [];
-        let d2StyleQueue = [];
-        let d2RecentStyles = [];
+        let d2WriteFnQueue = [];
+        let d2LastWriteFnId = null;
+        let d2WriteBTypeQueue = [];
+        let d2RecentWriteBTypes = [];
 
         // Fas 3 State (Tolka: 6/6, balanced 3+3, max 2 in a row)
         let f1Current = null;
@@ -1422,7 +1812,7 @@
         let f1RecentDirs = [];
         let f1LastScenarioId = null;
 
-        // Fas 4 State (6/6, two-column linear comparisons, differences & intervals)
+        // Fas 4 State (6/6, two-column linear comparisons, differences, intervals & two-step function modeling)
         let f5Current = null;
         let f5Score = 0;
         let f5CalcSolved = false;
@@ -1432,7 +1822,7 @@
         let f5TypeQueue = [];
         let f5RecentTypes = [];
 
-        /* ---------------- BALANCED SEQUENCE GENERATOR (MAX 2 IN A ROW) ---------------- */
+        /* ---------------- BALANCED SEQUENCE GENERATORS (MAX 2 IN A ROW) ---------------- */
         function generateBalancedDeck(typeA, typeB, countPerType = 3, prevHistory = []) {
             const validSequences = [];
             const initLast = prevHistory.length > 0 ? prevHistory[prevHistory.length - 1] : null;
@@ -1457,9 +1847,46 @@
             return validSequences[Math.floor(Math.random() * validSequences.length)];
         }
 
+        function generateBalancedTriDeck(types, countPerType = 2, prevHistory = []) {
+            const validSequences = [];
+            const initLast = prevHistory.length > 0 ? prevHistory[prevHistory.length - 1] : null;
+            const initRun = (prevHistory.length >= 2 && prevHistory[prevHistory.length - 1] === prevHistory[prevHistory.length - 2])
+                ? 2
+                : (initLast ? 1 : 0);
+
+            function backtrack(seq, rem, lastType, runLen) {
+                if (rem[0] === 0 && rem[1] === 0 && rem[2] === 0) {
+                    validSequences.push(seq);
+                    return;
+                }
+                for (let i = 0; i < 3; i++) {
+                    const t = types[i];
+                    if (rem[i] > 0 && !(lastType === t && runLen >= 2)) {
+                        const nextRem = [...rem];
+                        nextRem[i]--;
+                        backtrack([...seq, t], nextRem, t, lastType === t ? runLen + 1 : 1);
+                    }
+                }
+            }
+
+            backtrack([], [countPerType, countPerType, countPerType], initLast, initRun);
+            return validSequences[Math.floor(Math.random() * validSequences.length)];
+        }
+
         function drawNextBalancedType(queueRef, recentRef, typeA, typeB, countPerType = 3) {
             if (queueRef.length === 0) {
                 const fresh = generateBalancedDeck(typeA, typeB, countPerType, recentRef);
+                queueRef.push(...fresh);
+            }
+            const nextType = queueRef.shift();
+            recentRef.push(nextType);
+            if (recentRef.length > 2) recentRef.shift();
+            return nextType;
+        }
+
+        function drawNextBalancedTriType(queueRef, recentRef, types, countPerType = 2) {
+            if (queueRef.length === 0) {
+                const fresh = generateBalancedTriDeck(types, countPerType, recentRef);
                 queueRef.push(...fresh);
             }
             const nextType = queueRef.shift();
@@ -1542,7 +1969,7 @@
             }
         });
 
-        /* ---------------- VALIDATION: NOTATION & UNITS ---------------- */
+        /* ---------------- VALIDATION: NOTATION, UNITS & LINEAR FORMULAS ---------------- */
         function extractNumAndUnit(rawValStr) {
             const s = stripThousandSpaces(toAsciiMinus(rawValStr)).trim().replace(/,/g, '.');
             const match = s.match(/^([+-]?\d+(?:\.\d+)?)\s*(.*)$/);
@@ -1550,6 +1977,21 @@
             const num = parseFloat(match[1]);
             const unit = match[2].trim().toLowerCase().replace(/\.$/, '');
             return { num, unit };
+        }
+
+        function tryEvalPureArithmetic(rawStr) {
+            const s = stripThousandSpaces(toAsciiMinus(rawStr)).trim()
+                .replace(/[\u00B7\u22C5\u00D7]/g, '*')
+                .replace(/,/g, '.');
+            if (!s || /[a-zA-ZåäöÅÄÖ]/.test(s)) return null;
+            if (!/^[0-9+\-*/().\s]+$/.test(s)) return null;
+            if (!/[+\-*/]/.test(s.replace(/^[+-]/, ''))) return null;
+            try {
+                const val = new Function(`return (${s});`)();
+                return (typeof val === 'number' && isFinite(val)) ? val : null;
+            } catch (e) {
+                return null;
+            }
         }
 
         function validateDirectAnswer(userInput, opts) {
@@ -1566,18 +2008,36 @@
                 if (parts.length !== 2 || !parts[0].trim() || !parts[1].trim()) {
                     return { status: 'bad_format' };
                 }
-                const lhs = parts[0].replace(/\s+/g, '');
+                let lhs = parts[0].replace(/\s+/g, '');
                 rhsStr = parts[1].trim();
+                const rhsCompact = rhsStr.replace(/\s+/g, '');
+
+                // Support reversed equations such as "7 = t" or "284 = M(8)"
+                if (opts.expectedLhsList && opts.expectedLhsList.includes(rhsCompact)) {
+                    rhsStr = parts[0].trim();
+                    lhs = rhsCompact;
+                }
 
                 if (lhs === 'y') {
                     return { status: 'used_y' };
                 }
-                if (opts.wrongLhsPrefixes && opts.wrongLhsPrefixes.some(p => lhs.startsWith(p))) {
-                    return { status: 'wrong_var' };
+
+                // Check expected LHS BEFORE wrongLhsPrefixes so e.g. T(5) is never confused with t = 5
+                const isExpectedLhs = opts.expectedLhsList && opts.expectedLhsList.length > 0 && opts.expectedLhsList.includes(lhs);
+                if (!isExpectedLhs) {
+                    if (opts.wrongLhsPrefixes && opts.wrongLhsPrefixes.some(p => lhs.startsWith(p))) {
+                        return { status: 'wrong_var' };
+                    }
+                    if (opts.expectedLhsList && opts.expectedLhsList.length > 0) {
+                        return { status: 'bad_lhs' };
+                    }
                 }
-                if (opts.expectedLhsList && opts.expectedLhsList.length > 0 && !opts.expectedLhsList.includes(lhs)) {
-                    return { status: 'bad_lhs' };
-                }
+            }
+
+            // Detect unsimplified arithmetic expression on RHS (e.g., "M(8) = 440 - 160")
+            const arithVal = tryEvalPureArithmetic(rhsStr);
+            if (arithVal !== null) {
+                return { status: 'unsimplified_expr', arithVal };
             }
 
             const parsed = extractNumAndUnit(rhsStr);
@@ -1593,7 +2053,8 @@
                     };
                 }
                 const isStyck = (parsed.unit === 'styck' || parsed.unit === 'st');
-                const unitMatches = opts.validUnits.includes(parsed.unit) || (opts.countable && isStyck);
+                const validList = opts.validUnits || [];
+                const unitMatches = validList.includes(parsed.unit) || (opts.countable && isStyck);
                 if (!unitMatches) {
                     if (isStyck && !opts.countable) {
                         return {
@@ -1613,6 +2074,141 @@
             }
 
             return { status: 'ok' };
+        }
+
+        function validateLinearFormulaAnswer(userInput, opts) {
+            if (!userInput) return { status: 'empty' };
+            const s = stripThousandSpaces(toAsciiMinus(userInput)).trim();
+            if (!s.includes('=')) {
+                return { status: 'missing_lhs' };
+            }
+
+            const parts = s.split('=');
+            if (parts.length !== 2 || !parts[0].trim() || !parts[1].trim()) {
+                return { status: 'bad_format' };
+            }
+
+            let lhs = parts[0].replace(/\s+/g, '').toLowerCase();
+            let rhsRaw = parts[1].trim();
+            const expectedLhs = `${opts.fnName.toLowerCase()}(${opts.varName.toLowerCase()})`;
+
+            // Support reversed formula equations such as "450t + 300 = K(t)"
+            if (rhsRaw.replace(/\s+/g, '').toLowerCase() === expectedLhs) {
+                lhs = expectedLhs;
+                rhsRaw = parts[0].trim();
+            }
+
+            if (lhs === 'y') {
+                return { status: 'used_y' };
+            }
+            if (lhs !== expectedLhs) {
+                return { status: 'bad_lhs' };
+            }
+
+            let expr = rhsRaw
+                .replace(/[\u00B7\u22C5\u00D7]/g, '*')
+                .replace(/,/g, '.');
+
+            const letters = expr.match(/[a-zA-ZåäöÅÄÖ]+/g) || [];
+            const vLower = opts.varName.toLowerCase();
+            if (letters.length > 0) {
+                const wrongVarOnly = letters.every(tok => tok.length === 1 && tok.toLowerCase() !== vLower);
+                if (wrongVarOnly) {
+                    return { status: 'wrong_var_in_expr' };
+                }
+                const hasNonVar = letters.some(tok => tok.toLowerCase() !== vLower);
+                if (hasNonVar) {
+                    return { status: 'has_unit' };
+                }
+            }
+
+            const varOccurrences = (expr.match(new RegExp(opts.varName, 'gi')) || []).length;
+
+            const varRegex = new RegExp(opts.varName, 'gi');
+            expr = expr.replace(varRegex, 'v');
+            expr = expr.replace(/(\d)\s*v/g, '$1*v');
+            expr = expr.replace(/v\s*(\d)/g, 'v*$1');
+            expr = expr.replace(/(\d)\s*\(/g, '$1*(');
+            expr = expr.replace(/\)\s*(\d|v)/g, ')*$1');
+
+            if (!/^[0-9v+\-*/().\s]+$/.test(expr)) {
+                return { status: 'bad_format' };
+            }
+
+            let evalFn;
+            try {
+                evalFn = new Function('v', `return (${expr});`);
+            } catch (e) {
+                return { status: 'bad_format' };
+            }
+
+            const pts = [0, 1, 2, 7].map(val => {
+                try {
+                    return evalFn(val);
+                } catch (e) {
+                    return NaN;
+                }
+            });
+
+            if (pts.some(val => typeof val !== 'number' || !isFinite(val))) {
+                return { status: 'bad_format' };
+            }
+
+            const mStudent = pts[0];
+            const kStudent = pts[1] - pts[0];
+            const d2 = pts[2] - pts[1];
+            const d7 = (pts[3] - pts[0]) / 7;
+
+            if (Math.abs(d2 - kStudent) > 1e-4 || Math.abs(d7 - kStudent) > 1e-4) {
+                return { status: 'not_linear' };
+            }
+
+            if (Math.abs(kStudent - opts.expectedK) < 1e-4 && Math.abs(mStudent - opts.expectedM) < 1e-4) {
+                return { status: 'ok' };
+            }
+
+            // 1. Attached the variable to BOTH numbers (e.g. K(t) = 450t + 300t or V(t) = 600t - 25t)
+            if (opts.expectedM !== 0 && varOccurrences >= 2 && Math.abs(mStudent) < 1e-4) {
+                return { status: 'both_have_var' };
+            }
+
+            // 2. Forgot the variable completely (e.g. K(t) = 300 + 450 or K(t) = 750)
+            if (Math.abs(kStudent) < 1e-4) {
+                return { status: 'missing_var', mStudent };
+            }
+
+            // 3. Forgot the starting value m when m != 0 (e.g. K(t) = 450t)
+            if (opts.expectedM !== 0 && Math.abs(kStudent - opts.expectedK) < 1e-4 && Math.abs(mStudent) < 1e-4) {
+                return { status: 'missing_m' };
+            }
+
+            // 4. Added an extra starting value in a proportional model where m == 0 (e.g. L(t) = 140t + 140)
+            if (opts.expectedM === 0 && Math.abs(kStudent - opts.expectedK) < 1e-4 && Math.abs(mStudent) > 1e-4) {
+                return { status: 'added_m_in_prop', mStudent };
+            }
+
+            // 5. Swapped k and m (increasing: 300t + 450; decreasing: 25 - 600t or 600t - 25)
+            if (opts.expectedM !== 0 && Math.abs(kStudent - opts.expectedM) < 1e-4 && Math.abs(mStudent - opts.expectedK) < 1e-4) {
+                return { status: 'swapped_km' };
+            }
+            if (opts.expectedK < 0 && (
+                (Math.abs(kStudent + opts.expectedM) < 1e-4 && Math.abs(mStudent - Math.abs(opts.expectedK)) < 1e-4) ||
+                (Math.abs(kStudent - opts.expectedM) < 1e-4 && Math.abs(mStudent + Math.abs(opts.expectedK)) < 1e-4)
+            )) {
+                return { status: 'swapped_km' };
+            }
+
+            // 6. Decreasing model: reversed subtraction (25t - 600 instead of 600 - 25t)
+            if (opts.expectedK < 0 && Math.abs(kStudent + opts.expectedK) < 1e-4 && Math.abs(mStudent + opts.expectedM) < 1e-4) {
+                return { status: 'reversed_sub_dec' };
+            }
+
+            // 7. Decreasing model: used + instead of - (600 + 25t instead of 600 - 25t)
+            if (opts.expectedK < 0 && Math.abs(kStudent + opts.expectedK) < 1e-4 && Math.abs(mStudent - opts.expectedM) < 1e-4) {
+                return { status: 'wrong_sign_k' };
+            }
+
+            return { status: 'wrong_formula', kStudent, mStudent };
         }
 
         /* ---------------- GLOBAL KEYBOARD & TEACHER SHORTCUTS ---------------- */
@@ -1693,12 +2289,15 @@
                 return;
             }
 
-            // Fas 2 (Direkt) Enter-to-next when question completed (plus 1/2/3 during interpretation)
+            // Fas 2 (Direkt): 1/2/3 during interpretation of a) or b), Enter for next when completed
             if (activeTab === 2) {
                 const milestoneVisible = !document.getElementById('d2-milestone-banner').classList.contains('hidden');
                 if (milestoneVisible) return;
 
-                if (d2Current && d2SingleCalcSolved && !d2QuestionCompleted && ['1', '2', '3'].includes(e.key)) {
+                const isInterpA = d2Current && d2SolvedA && !d2InterpretedA;
+                const isInterpB = d2Current && d2SolvedB && !d2QuestionCompleted;
+
+                if ((isInterpA || isInterpB) && ['1', '2', '3'].includes(e.key)) {
                     e.preventDefault();
                     answerD2Interpretation(parseInt(e.key, 10) - 1);
                     return;
@@ -1726,10 +2325,18 @@
                 return;
             }
 
-            // Fas 4 (Utmaning) Enter-to-next
-            if (activeTab === 4 && f5Answered && e.key === 'Enter') {
+            // Fas 4 (Utmaning) Enter-to-next (plus 1/2/3 during interpretation)
+            if (activeTab === 4) {
                 const milestoneVisible = !document.getElementById('f5-celebration-banner').classList.contains('hidden');
-                if (!milestoneVisible) {
+                if (milestoneVisible) return;
+
+                if (f5Current && f5CalcSolved && !f5Answered && ['1', '2', '3'].includes(e.key)) {
+                    e.preventDefault();
+                    answerF5Interpretation(parseInt(e.key, 10) - 1);
+                    return;
+                }
+
+                if (f5Answered && e.key === 'Enter') {
                     e.preventDefault();
                     nextF5Question();
                 }
@@ -1815,8 +2422,10 @@
                 else if (tabIdx === 1 && !f0Current) { nextFas0Question(); }
                 else if (tabIdx === 2) {
                     if (!d2Current) generateNextDirectWorksheet();
-                    if (!d2SingleCalcSolved) {
-                        document.getElementById('d2-single-input').focus();
+                    if (!d2SolvedA) {
+                        document.getElementById('d2-input-a').focus();
+                    } else if (d2InterpretedA && !d2SolvedB) {
+                        document.getElementById('d2-input-b').focus();
                     }
                 }
                 else if (tabIdx === 3 && !f1Current) { nextFas1Question(); }
@@ -2144,289 +2753,739 @@
             nextFas0Question();
         }
 
-        /* ---------------- TAB 2: FAS 2 — 2. Direkt (CONSISTENT F(a)=b OR x=a + INTERPRET) ---------------- */
-        function generateDirectProblem() {
-            const type = drawNextBalancedType(d2TypeQueue, d2RecentTypes, 'givenX', 'givenY', 3);
+        /* ---------------- TAB 2: FAS 2 — 2. Direkt (Q1-5: a -> MC_a -> b -> MC_b, Q6-8: WRITE FN a + APPLY b) ---------------- */
+        function generateSymbolicBridgeProblem() {
             const direction = drawNextBalancedType(d2DirQueue, d2RecentDirs, 'inc', 'dec', 3);
-            const promptStyle = drawNextBalancedType(d2StyleQueue, d2RecentStyles, 'symbolic', 'contextual', 3);
-
             const inst = createRandomLinearInstance(d2LastScenarioId, true, direction);
-            if (type === 'givenY' && inst.x === 0) {
-                inst.x = pickRandom(inst.tpl.xRange);
-                inst.y = Math.round((inst.m + inst.k * inst.x) * 1000) / 1000;
-            }
             d2LastScenarioId = inst.tpl.id;
 
-            const { tpl, k, m, x, y } = inst;
+            const { tpl, k, m } = inst;
             const fn = tpl.fnName;
             const v = tpl.varName;
             const fnLower = fn.toLowerCase();
             const vLower = v.toLowerCase();
 
-            const scenarioText = tpl.intro(k, m);
+            // Deluppgift a): Beräkna F(xA)
+            const xA = inst.x;
+            const yA = inst.y;
 
-            let singlePrompt;
-            if (promptStyle === 'symbolic') {
-                singlePrompt = (type === 'givenX')
-                    ? `Beräkna ${fn}(${x})`
-                    : `Bestäm ${v} då ${fn}(${v}) = ${formatSvNum(y)}`;
-            } else {
-                if (type === 'givenX') {
-                    singlePrompt = (x === 0) ? tpl.askStartText : tpl.askForYText(x);
-                } else {
-                    singlePrompt = (y === 0 && tpl.askZeroText) ? tpl.askZeroText : tpl.askForXText(y);
-                }
+            // Deluppgift b): Bestäm v då F(v) = yB (spaced at least 2 units away from xA)
+            const altPool = tpl.xRange.filter(val => Math.abs(val - xA) >= 2);
+            let xB = pickRandom(altPool.length > 0 ? altPool : tpl.xRange.filter(val => val !== xA));
+            if (tpl.direction === 'dec' && Math.random() < 0.28) {
+                const rootX = m / Math.abs(k);
+                if (Number.isInteger(rootX) && Math.abs(rootX - xA) >= 2) xB = rootX;
             }
+            const yB = Math.round((m + k * xB) * 1000) / 1000;
 
-            const ansStr = (type === 'givenX')
-                ? `${fn}(${x}) = ${formatSvNum(y)}`
-                : `${v} = ${x}`;
+            const scenarioText = tpl.intro(k, m);
+            const promptA = `Beräkna ${fn}(${xA})`;
+            const promptB = `Bestäm ${v} då ${fn}(${v}) = ${formatSvNum(yB)}`;
 
-            const hintStr = (type === 'givenX')
-                ? `Sätt in ${v} = ${x} i formeln och skriv svaret som ${fn}(${x}) = ...`
-                : `Ställ upp ekvationen ${tpl.exprStr(k, m)} = ${formatSvNum(y)} och lös ut ${v} = ...`;
+            const ansStrA = `${fn}(${xA}) = ${formatSvNum(yA)}`;
+            const ansStrB = `${v} = ${xB}`;
 
-            const meaningOptions = (type === 'givenX')
-                ? shuffleOptions([
-                    { text: tpl.meaningGivenX(x, y), isCorrect: true },
-                    { text: x === 0
-                        ? `Förändringen är ${formatSvNum(y)} ${tpl.yDisplayUnit} per ${tpl.unitSing}.`
-                        : `Vid ${formatSvNum(y)} ${tpl.unitPlur} är värdet ${x} ${tpl.yDisplayUnit}.`, isCorrect: false },
-                    { text: x === 0
-                        ? `Efter ${formatSvNum(y)} ${tpl.unitPlur} är värdet 0 ${tpl.yDisplayUnit}.`
-                        : `Startvärdet när ${v} = 0 är ${formatSvNum(y)} ${tpl.yDisplayUnit}.`, isCorrect: false }
-                ])
-                : shuffleOptions([
-                    { text: tpl.meaningGivenY(x, y), isCorrect: true },
-                    { text: `Vid ${formatSvNum(y)} ${tpl.unitPlur} är funktionsvärdet ${x} ${tpl.yDisplayUnit}.`, isCorrect: false },
-                    { text: `Förändringen per ${tpl.unitSing} är ${x} ${tpl.yDisplayUnit}.`, isCorrect: false }
-                ]);
+            const hintStrA = `a) Sätt in ${v} = ${xA} i formeln och skriv svaret som ${fn}(${xA}) = ...`;
+            const hintStrB = `b) Ställ upp ekvationen ${tpl.exprStr(k, m)} = ${formatSvNum(yB)} och lös ut ${v} = ...`;
 
-            const validationOpts = (type === 'givenX')
+            // Multiple-choice options for part a)
+            const meaningOptionsA = shuffleOptions([
+                {
+                    text: tpl.meaningGivenX(xA, yA),
+                    isCorrect: true
+                },
+                {
+                    text: xA === 0
+                        ? `Förändringen är ${formatSvNum(yA)} ${tpl.yDisplayUnit} per ${tpl.unitSing}.`
+                        : tpl.meaningGivenX(yA, xA),
+                    isCorrect: false
+                },
+                {
+                    text: xA === 0
+                        ? `Efter ${formatSvNum(yA)} ${tpl.unitPlur} är värdet 0 ${tpl.yDisplayUnit}.`
+                        : `Startvärdet när ${v} = 0 är ${formatSvNum(yA)} ${tpl.yDisplayUnit}.`,
+                    isCorrect: false
+                }
+            ]);
+
+            // Multiple-choice options for part b)
+            const meaningOptionsB = shuffleOptions([
+                {
+                    text: tpl.meaningGivenY(xB, yB),
+                    isCorrect: true
+                },
+                {
+                    text: tpl.meaningGivenY(yB, xB),
+                    isCorrect: false
+                },
+                {
+                    text: `Förändringen är ${xB} ${tpl.yDisplayUnit} per ${tpl.unitSing}.`,
+                    isCorrect: false
+                }
+            ]);
+
+            return {
+                taskMode: 'symbolicBridge',
+                tpl,
+                k,
+                m,
+                xA,
+                yA,
+                xB,
+                yB,
+                fnName: fn,
+                varName: v,
+                scenarioText,
+                promptA,
+                promptB,
+                ansStrA,
+                ansStrB,
+                hintStrA,
+                hintStrB,
+                meaningOptionsA,
+                meaningOptionsB,
+                validationA: {
+                    requireEquals: true,
+                    expectedLhsList: [`${fnLower}(${xA})`],
+                    wrongLhsPrefixes: [vLower],
+                    expectedNum: yA,
+                    forbidUnit: false,
+                    validUnits: tpl.yUnits,
+                    unitPlural: tpl.yDisplayUnit,
+                    displayUnit: tpl.yDisplayUnit,
+                    countable: false
+                },
+                validationB: {
+                    requireEquals: true,
+                    expectedLhsList: [vLower],
+                    wrongLhsPrefixes: [`${fnLower}(`],
+                    expectedNum: xB,
+                    forbidUnit: false,
+                    validUnits: tpl.xUnits,
+                    unitPlural: tpl.unitPlur,
+                    displayUnit: tpl.unitPlur,
+                    countable: tpl.xCountable
+                }
+            };
+        }
+
+        function generateWriteAndApplyProblem() {
+            if (d2WriteFnQueue.length === 0) {
+                d2WriteFnQueue = shuffleOptions(['incLinear', 'decLinear', 'prop']);
+            }
+            const wfType = d2WriteFnQueue.shift();
+            let pool = WRITE_FUNCTION_TEMPLATES.filter(t => t.wfType === wfType && t.id !== d2LastWriteFnId);
+            if (pool.length === 0) pool = WRITE_FUNCTION_TEMPLATES.filter(t => t.wfType === wfType);
+            const tpl = pickRandom(pool);
+            d2LastWriteFnId = tpl.id;
+
+            const pair = pickRandom(tpl.pairs);
+            const k = pair.k;
+            const m = pair.m;
+            const xB = pickRandom(tpl.xRange);
+            const yB = Math.round((k * xB + m) * 1000) / 1000;
+
+            const bKind = drawNextBalancedType(d2WriteBTypeQueue, d2RecentWriteBTypes, 'givenX', 'givenY', 2);
+            const fn = tpl.fnName;
+            const v = tpl.varName;
+            const fnLower = fn.toLowerCase();
+            const vLower = v.toLowerCase();
+
+            const promptB = (bKind === 'givenX') ? tpl.askForYText(xB) : tpl.askForXText(yB);
+            const ansStrB = (bKind === 'givenX') ? `${fn}(${xB}) = ${formatSvNum(yB)}` : `${v} = ${xB}`;
+
+            const exprRight = tpl.ansDisplayA(k, m).split('=')[1].trim();
+            const hintStrB = (bKind === 'givenX')
+                ? `b) Sätt in ${v} = ${xB} i din funktion och skriv svaret som ${fn}(${xB}) = ...`
+                : `b) Ställ upp ekvationen ${exprRight} = ${formatSvNum(yB)} och lös ut ${v} = ...`;
+
+            const validationB = (bKind === 'givenX')
                 ? {
                     requireEquals: true,
-                    expectedLhsList: [`${fnLower}(${x})`],
+                    expectedLhsList: [`${fnLower}(${xB})`],
                     wrongLhsPrefixes: [vLower],
-                    expectedNum: y,
-                    forbidUnit: true,
-                    forbidUnitMsg: `Skriv svaret med enbart talet efter likhetstecknet, t.ex. <strong>${fn}(${x}) = ${formatSvNum(y)}</strong> — enheten väljer du i tolkningen.`
+                    expectedNum: yB,
+                    forbidUnit: false,
+                    validUnits: tpl.yUnits,
+                    unitPlural: tpl.yDisplayUnit,
+                    displayUnit: tpl.yDisplayUnit,
+                    countable: false
                 }
                 : {
                     requireEquals: true,
                     expectedLhsList: [vLower],
                     wrongLhsPrefixes: [`${fnLower}(`],
-                    expectedNum: x,
-                    forbidUnit: true,
-                    forbidUnitMsg: `Skriv svaret med enbart talet efter likhetstecknet, t.ex. <strong>${v} = ${x}</strong> — enheten väljer du i tolkningen.`
+                    expectedNum: xB,
+                    forbidUnit: false,
+                    validUnits: tpl.xUnits,
+                    unitPlural: tpl.unitPlur,
+                    displayUnit: tpl.unitPlur,
+                    countable: tpl.xCountable
                 };
 
             return {
-                type,
-                promptStyle,
-                inst,
+                taskMode: 'writeAndApply',
+                bKind,
                 tpl,
                 k,
                 m,
-                scenarioText,
-                singlePrompt,
-                ansStr,
-                hintStr,
-                meaningOptions,
-                validationOpts
+                xB,
+                yB,
+                fnName: fn,
+                varName: v,
+                scenarioText: tpl.scenario(k, m),
+                promptA: tpl.promptA,
+                promptB,
+                ansStrA: tpl.ansDisplayA(k, m),
+                ansStrB,
+                hintStrA: `a) ${tpl.hintA(k, m)}`,
+                hintStrB,
+                meaningOptionsB: shuffleOptions(tpl.meaningsWithApply(k, m, xB, yB)),
+                validationB
             };
+        }
+
+        function generateDirectProblem() {
+            // Questions 1-5 (d2Score < 5): Sequential Symbolic Bridge (a -> MC_a -> b -> MC_b)
+            // Questions 6-8 (5 <= d2Score < 8): Write Function (a) + Pure Text Apply (b) + MC
+            // Beyond 8: 50/50 mix
+            const shouldWriteAndApply = (d2Score >= 5 && d2Score < 8) || (d2Score >= 8 && Math.random() < 0.5);
+            return shouldWriteAndApply ? generateWriteAndApplyProblem() : generateSymbolicBridgeProblem();
         }
 
         function generateNextDirectWorksheet() {
             d2Current = generateDirectProblem();
 
-            d2SingleCalcSolved = false;
+            d2SolvedA = false;
+            d2InterpretedA = false;
+            d2SolvedB = false;
             d2QuestionCompleted = false;
-            d2WrongCount = 0;
+            d2WrongCountA = 0;
+            d2WrongCountB = 0;
 
-            const { tpl } = d2Current;
             document.getElementById('d2-scenario-text').innerText = d2Current.scenarioText;
-            document.getElementById('d2-single-prompt').innerText = d2Current.singlePrompt;
+            document.getElementById('d2-prompt-a').innerText = d2Current.promptA;
+            document.getElementById('d2-prompt-b').innerText = d2Current.promptB;
+
             document.getElementById('d2-hint-box').classList.add('hidden');
             document.getElementById('d2-hint-btn').classList.remove('hidden');
 
             document.getElementById('d2-interpret-prompt').classList.add('hidden');
             document.getElementById('d2-interpret-box').classList.add('hidden');
 
+            const savedA = document.getElementById('d2-a-interp-saved');
+            savedA.classList.add('hidden');
+            savedA.innerHTML = '';
+
             document.getElementById('d2-feedback-banner').classList.add('hidden');
             document.getElementById('d2-milestone-banner').classList.add('hidden');
             document.getElementById('d2-next-row').classList.add('hidden');
 
-            document.getElementById('d2-single-fn-btn').innerText = `${tpl.fnName}() =`;
-            document.getElementById('d2-single-var-btn').innerText = `${tpl.varName} =`;
-            document.getElementById('d2-right-subhint').innerText = `Skriv t.ex. ${tpl.fnName}(5) = ... eller ${tpl.varName} = ... och tolka sedan svaret`;
+            // Hide deluppgift b) initially until a) (and its interpretation in symbolicBridge) is completed
+            document.getElementById('d2-prompt-b-wrap').classList.add('hidden');
+            document.getElementById('d2-row-b').classList.add('hidden');
 
-            const inp = document.getElementById('d2-single-input');
-            inp.value = '';
-            inp.disabled = false;
-            document.getElementById('d2-single-submit').disabled = false;
+            const fn = d2Current.fnName;
+            const v = d2Current.varName;
+            const aFnBtn = document.getElementById('d2-a-fn-btn');
+            const aVarBtn = document.getElementById('d2-a-var-btn');
+            const bFnBtn = document.getElementById('d2-b-fn-btn');
+            const bVarBtn = document.getElementById('d2-b-var-btn');
 
-            renderD2MeaningOptions();
+            if (d2Current.taskMode === 'writeAndApply') {
+                const fSig = `${fn}(${v})`;
+                document.getElementById('d2-label-a').innerText = `Skriv funktionsuttrycket ${fSig} = ...:`;
+                aFnBtn.innerText = `${fSig} =`;
+                aVarBtn.classList.add('hidden');
 
-            if (activeTab === 2) inp.focus();
+                document.getElementById('d2-label-b').innerText = `Svara med funktionsnotering:`;
+                bFnBtn.innerText = `${fn}() =`;
+                bVarBtn.innerText = `${v} =`;
+                bVarBtn.classList.remove('hidden');
+                document.getElementById('d2-right-subhint').innerText = `Börja med att skriva formeln ${fSig} = ... i a)`;
+            } else {
+                document.getElementById('d2-label-a').innerText = `Beräkna funktionsvärdet:`;
+                aFnBtn.innerText = `${fn}() =`;
+                aVarBtn.innerText = `${v} =`;
+                aVarBtn.classList.remove('hidden');
+
+                document.getElementById('d2-label-b').innerText = `Lös ekvationen:`;
+                bFnBtn.innerText = `${fn}() =`;
+                bVarBtn.innerText = `${v} =`;
+                bVarBtn.classList.remove('hidden');
+                document.getElementById('d2-right-subhint').innerText = `Börja med a): skriv t.ex. ${fn}(${d2Current.xA}) = ...`;
+            }
+
+            const inpA = document.getElementById('d2-input-a');
+            const inpB = document.getElementById('d2-input-b');
+            inpA.value = '';
+            inpA.disabled = false;
+            document.getElementById('d2-submit-a').disabled = false;
+
+            inpB.value = '';
+            inpB.disabled = false;
+            document.getElementById('d2-submit-b').disabled = false;
+
+            if (activeTab === 2) inpA.focus();
         }
 
         function revealD2Hint() {
             if (!d2Current) return;
-            document.getElementById('d2-hint-text').innerText = d2Current.hintStr;
+            let text = "";
+            if (d2Current.taskMode === 'writeAndApply') {
+                text = !d2SolvedA ? d2Current.hintStrA : d2Current.hintStrB;
+            } else {
+                if (!d2SolvedA) {
+                    text = d2Current.hintStrA;
+                } else if (!d2InterpretedA) {
+                    text = `Titta på enheterna i uppgiften: ${d2Current.xA} anger ${d2Current.tpl.unitPlur} och ${formatSvNum(d2Current.yA)} anger ${d2Current.tpl.yDisplayUnit}.`;
+                } else if (!d2SolvedB) {
+                    text = d2Current.hintStrB;
+                } else {
+                    text = `Titta på enheterna i uppgiften: ${d2Current.varName} = ${d2Current.xB} anger ${d2Current.tpl.unitPlur} och ${formatSvNum(d2Current.yB)} anger ${d2Current.tpl.yDisplayUnit}.`;
+                }
+            }
+            document.getElementById('d2-hint-text').innerText = text;
             document.getElementById('d2-hint-box').classList.remove('hidden');
             document.getElementById('d2-hint-btn').classList.add('hidden');
         }
 
-        function insertD2SinglePrefix(kind) {
+        function insertD2Prefix(part, kind) {
             if (!d2Current) return;
-            const input = document.getElementById('d2-single-input');
+            const input = document.getElementById(part === 'a' ? 'd2-input-a' : 'd2-input-b');
             if (!input || input.disabled) return;
-            const { tpl } = d2Current;
-            if (kind === 'fn') {
-                input.value = `${tpl.fnName}() = `;
+
+            const fn = d2Current.fnName;
+            const v = d2Current.varName;
+
+            if (part === 'a' && d2Current.taskMode === 'writeAndApply') {
+                input.value = `${fn}(${v}) = `;
                 input.focus();
-                input.setSelectionRange(tpl.fnName.length + 1, tpl.fnName.length + 1);
+                input.setSelectionRange(input.value.length, input.value.length);
+                return;
+            }
+
+            if (kind === 'fn') {
+                input.value = `${fn}() = `;
+                input.focus();
+                input.setSelectionRange(fn.length + 1, fn.length + 1);
             } else {
-                input.value = `${tpl.varName} = `;
+                input.value = `${v} = `;
                 input.focus();
             }
         }
 
-        function renderD2MeaningOptions() {
+        function renderD2MeaningOptions(optionsList, headingText, leftPromptText) {
+            document.getElementById('d2-interpret-prompt-text').innerText = leftPromptText;
+            document.getElementById('d2-interpret-prompt').classList.remove('hidden');
+            document.getElementById('d2-interpret-heading').innerText = headingText;
+
             const box = document.getElementById('d2-meaning-options');
-            box.innerHTML = d2Current.meaningOptions.map((opt, idx) => `
+            box.innerHTML = optionsList.map((opt, idx) => `
                 <button id="d2-mopt-${idx}" onclick="answerD2Interpretation(${idx})"
-                        class="w-full text-left px-3 py-2 rounded-lg border dark:border-slate-700 border-slate-300 dark:bg-slate-950 bg-white dark:text-slate-100 text-slate-900 hover:border-indigo-500 text-sm font-normal transition leading-snug flex items-center gap-2.5">
+                        class="w-full text-left px-3 py-1.5 rounded-lg border dark:border-slate-700 border-slate-300 dark:bg-slate-950 bg-white dark:text-slate-100 text-slate-900 hover:border-indigo-500 text-xs sm:text-sm font-normal transition leading-snug flex items-center gap-2.5">
                     <span class="w-5 h-5 rounded bg-indigo-600/20 dark:text-indigo-400 text-indigo-700 border border-indigo-500/40 flex items-center justify-center text-xs font-semibold shrink-0">${idx + 1}</span>
                     <span>${opt.text}</span>
                 </button>
             `).join('');
+
+            document.getElementById('d2-interpret-box').classList.remove('hidden');
+            document.getElementById('d2-hint-box').classList.add('hidden');
+            document.getElementById('d2-hint-btn').classList.remove('hidden');
         }
 
-        function checkD2SingleAnswer() {
-            if (!d2Current || d2SingleCalcSolved) return;
-            const input = document.getElementById('d2-single-input');
+        function checkD2PartA() {
+            if (!d2Current || d2SolvedA) return;
+            const input = document.getElementById('d2-input-a');
             const userVal = input.value.trim();
             const banner = document.getElementById('d2-feedback-banner');
             const msg = document.getElementById('d2-feedback-msg');
             const nextRow = document.getElementById('d2-next-row');
 
             if (!userVal) {
-                banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-2.5 text-sm dark:text-rose-200 text-rose-950 space-y-1.5";
-                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mt-0.5"></i> <span>Skriv ditt svar i rutan innan du rättar.</span>`;
+                banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-2 text-xs sm:text-sm dark:text-rose-200 text-rose-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mt-0.5"></i> <span>Skriv ditt svar på <strong>a)</strong> innan du rättar.</span>`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
-            const res = validateDirectAnswer(userVal, d2Current.validationOpts);
-            const { tpl, k, m, x, y } = d2Current.inst;
+            // Branch 1: Write Your Own Function in a) (Questions 6–8)
+            if (d2Current.taskMode === 'writeAndApply') {
+                const tpl = d2Current.tpl;
+                const k = d2Current.k;
+                const m = d2Current.m;
+                const v = d2Current.varName;
+                const absK = Math.abs(k);
+                const fSig = `${d2Current.fnName}(${v})`;
+
+                const res = validateLinearFormulaAnswer(userVal, {
+                    fnName: d2Current.fnName,
+                    varName: v,
+                    expectedK: k,
+                    expectedM: m
+                });
+
+                if (res.status === 'ok') {
+                    d2SolvedA = true;
+                    d2InterpretedA = true;
+                    registerCorrectAction();
+                    input.disabled = true;
+                    document.getElementById('d2-submit-a').disabled = true;
+
+                    // Unlock deluppgift b)
+                    document.getElementById('d2-prompt-b-wrap').classList.remove('hidden');
+                    document.getElementById('d2-row-b').classList.remove('hidden');
+                    document.getElementById('d2-hint-box').classList.add('hidden');
+                    document.getElementById('d2-hint-btn').classList.remove('hidden');
+                    document.getElementById('d2-right-subhint').innerText = `Använd din funktion ${d2Current.ansStrA} i b)`;
+
+                    banner.className = "dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-2 text-xs sm:text-sm dark:text-emerald-200 text-emerald-950 space-y-1.5";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i> <span><strong>Rätt funktion i a)!</strong> (${d2Current.ansStrA}) Besvara nu <strong>b)</strong>.</span>`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+
+                    document.getElementById('d2-input-b').focus();
+                    return;
+                }
+
+                if (res.status === 'missing_lhs') {
+                    banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Skriv hela funktionsuttrycket med likhetstecken, t.ex. <strong>${fSig} = ...</strong>.</span>`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+                    return;
+                }
+
+                if (res.status === 'used_y') {
+                    banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Använd funktionens namn <strong>${fSig}</strong> i stället för <strong>y</strong>.</span>`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+                    return;
+                }
+
+                if (res.status === 'bad_lhs') {
+                    banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Kontrollera vänsterledet — funktionen ska skrivas <strong>${fSig} = ...</strong>.</span>`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+                    return;
+                }
+
+                if (res.status === 'has_unit') {
+                    banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Skriv funktionen utan enheter i formeln — enheterna väljer du i tolkningen.</span>`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+                    return;
+                }
+
+                if (res.status === 'wrong_var_in_expr') {
+                    banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Använd variabeln <strong>${v}</strong> i högerledet så att den stämmer med <strong>${fSig}</strong>.</span>`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+                    return;
+                }
+
+                d2WrongCountA++;
+                d2Score = Math.max(0, d2Score - 1);
+                document.getElementById('d2-score').innerText = `Klarade: ${d2Score} / ${d2Target}`;
+                registerMistakeAction();
+
+                if (d2WrongCountA >= 2) revealD2Hint();
+
+                let diagnostic = "";
+                if (res.status === 'both_have_var') {
+                    diagnostic = `Du har satt variabeln <strong>${v}</strong> på båda talen. Startvärdet (<strong>${formatSvNum(m)}</strong>, ${tpl.startDesc}) gäller bara en gång och ska stå ensamt utan <strong>${v}</strong> — bara ${tpl.rateDesc} (<strong>${formatSvNum(absK)}</strong>) multipliceras med <strong>${v}</strong>.`;
+                } else if (res.status === 'missing_var') {
+                    diagnostic = `Du har skrivit ett fast tal utan variabeln <strong>${v}</strong>. Startvärdet <strong>${formatSvNum(m)}</strong> (${tpl.startDesc}) står ensamt utan <strong>${v}</strong>, medan <strong>${formatSvNum(absK)}</strong> (${tpl.rateDesc}) upprepas för varje ${tpl.unitSing} och behöver ett <strong>${v}</strong>.`;
+                } else if (res.status === 'missing_m') {
+                    diagnostic = `Du har fått med förändringen med <strong>${v}</strong> rätt, men glömt startvärdet! Funktionen börjar på <strong>${formatSvNum(m)}</strong> (${tpl.startDesc}) redan vid <strong>${v} = 0</strong>, så lägg till <strong>${formatSvNum(m)}</strong> utan variabel.`;
+                } else if (res.status === 'added_m_in_prop') {
+                    diagnostic = `Här finns inget fast startvärde — funktionen börjar på 0 vid <strong>${v} = 0</strong>. Ta bort det extra startvärdet och skriv bara förändringen multiplicerad med <strong>${v}</strong>.`;
+                } else if (res.status === 'swapped_km') {
+                    diagnostic = `Du har bytt plats på talen. Startvärdet (<strong>${formatSvNum(m)}</strong>, ${tpl.startDesc}) är där funktionen börjar och ska stå ensamt utan <strong>${v}</strong>, medan förändringen (<strong>${formatSvNum(absK)}</strong> per ${tpl.unitSing}) upprepas och ska stå tillsammans med <strong>${v}</strong>.`;
+                } else if (res.status === 'reversed_sub_dec') {
+                    diagnostic = `Mängden börjar på <strong>${formatSvNum(m)}</strong> (${tpl.startDesc}) och minskar med <strong>${formatSvNum(absK)}</strong> per ${tpl.unitSing}. Ställ startvärdet först och dra ifrån förändringen: <strong>${fSig} = ${formatSvNum(m)} ${MINUS} ${formatSvNum(absK)}${v}</strong>.`;
+                } else if (res.status === 'wrong_sign_k') {
+                    diagnostic = `Mängden minskar från startvärdet <strong>${formatSvNum(m)}</strong> (${tpl.startDesc}) med <strong>${formatSvNum(absK)}</strong> per ${tpl.unitSing} — använd minustecken (<strong>${MINUS}</strong>) framför <strong>${formatSvNum(absK)}${v}</strong>.`;
+                } else if (m === 0) {
+                    diagnostic = `Funktionen börjar på 0 vid <strong>${v} = 0</strong> och ändras med <strong>${formatSvNum(k)}</strong> per ${tpl.unitSing} (${tpl.rateDesc}), som multipliceras med variabeln <strong>${v}</strong>.`;
+                } else {
+                    diagnostic = `Tänk på delarna i funktionen: startvärdet <strong>${formatSvNum(m)}</strong> (${tpl.startDesc}) står ensamt utan <strong>${v}</strong>, medan förändringen <strong>${formatSvNum(absK)}</strong> per ${tpl.unitSing} (${tpl.rateDesc}) multipliceras med <strong>${v}</strong>.`;
+                }
+
+                banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-2 text-xs sm:text-sm dark:text-rose-200 text-rose-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mt-0.5"></i> <span><strong>a):</strong> ${diagnostic}</span>`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            // Branch 2: Sequential Symbolic Bridge Evaluation in a) (Questions 1–5)
+            const res = validateDirectAnswer(userVal, d2Current.validationA);
+            const { tpl, k, m, xA, fnName, varName } = d2Current;
 
             if (res.status === 'ok') {
-                d2SingleCalcSolved = true;
+                d2SolvedA = true;
                 registerCorrectAction();
                 input.disabled = true;
                 input.blur();
-                document.getElementById('d2-single-submit').disabled = true;
+                document.getElementById('d2-submit-a').disabled = true;
 
-                document.getElementById('d2-interpret-prompt').classList.remove('hidden');
-                document.getElementById('d2-interpret-box').classList.remove('hidden');
+                // Show multiple-choice interpretation for a) before unlocking b)
+                renderD2MeaningOptions(
+                    d2Current.meaningOptionsA,
+                    `Vad betyder ${d2Current.ansStrA} i det här sammanhanget?`,
+                    `Tolka vad ditt svar på a) (${d2Current.ansStrA}) betyder i sammanhanget.`
+                );
 
-                banner.className = "dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-2.5 text-sm dark:text-emerald-200 text-emerald-950 space-y-1.5";
-                msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i> <span><strong>Rätt!</strong> (${d2Current.ansStr}) Välj nu rätt tolkning ovan.</span>`;
+                banner.className = "dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-2 text-xs sm:text-sm dark:text-emerald-200 text-emerald-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i> <span><strong>Rätt på a)!</strong> (${d2Current.ansStrA}) Välj nu rätt tolkning av svaret i <strong>a)</strong>.</span>`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
             if (res.status === 'missing_lhs') {
-                const exampleFormat = (d2Current.type === 'givenX')
-                    ? `<strong>${tpl.fnName}(${x}) = ...</strong>`
-                    : `<strong>${tpl.varName} = ...</strong>`;
-                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2.5 text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
-                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Skriv hela uttrycket med likhetstecken, t.ex. ${exampleFormat}.</span>`;
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Skriv hela uttrycket i <strong>a)</strong> med likhetstecken, t.ex. <strong>${fnName}(${xA}) = ...</strong>.</span>`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
             if (res.status === 'used_y') {
-                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2.5 text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
-                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Använd funktionens beteckning <strong>${tpl.fnName}(${tpl.varName})</strong> i stället för <strong>y</strong>.</span>`;
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Använd funktionens beteckning <strong>${fnName}(${xA})</strong> i stället för <strong>y</strong>.</span>`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
             if (res.status === 'bad_lhs') {
-                const expectedHint = (d2Current.type === 'givenX')
-                    ? `Kontrollera vänsterledet — här ska det stå <strong>${tpl.fnName}(${x}) = ...</strong>.`
-                    : `Kontrollera vänsterledet — här söker du <strong>${tpl.varName} = ...</strong>.`;
-                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2.5 text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
-                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>${expectedHint}</span>`;
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Kontrollera vänsterledet i <strong>a)</strong> — här ska det stå <strong>${fnName}(${xA}) = ...</strong>.</span>`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            if (res.status === 'unsimplified_expr') {
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Räkna ut det sista steget till ett enda tal, t.ex. <strong>${fnName}(${xA}) = ...</strong>.</span>`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
             if (res.status === 'has_unit' || res.status === 'bad_unit') {
-                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2.5 text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
                 msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>${res.msg}</span>`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
-            d2WrongCount++;
+            d2WrongCountA++;
             d2Score = Math.max(0, d2Score - 1);
             document.getElementById('d2-score').innerText = `Klarade: ${d2Score} / ${d2Target}`;
             registerMistakeAction();
 
-            if (d2WrongCount >= 2) {
-                revealD2Hint();
-            }
+            if (d2WrongCountA >= 2) revealD2Hint();
 
             let diagnostic = "";
-            if (res.status === 'wrong_var' && d2Current.type === 'givenX') {
-                diagnostic = `Du har redan fått ${tpl.varName} = ${x}. Nu söker du funktionsvärdet, så skriv <strong>${tpl.fnName}(${x}) = ...</strong>.`;
-            } else if (res.status === 'wrong_var' && d2Current.type === 'givenY') {
-                diagnostic = `Du har fått funktionsvärdet ${formatSvNum(y)}. Lös ekvationen <strong>${tpl.fnName}(${tpl.varName}) = ${formatSvNum(y)}</strong> och skriv <strong>${tpl.varName} = ...</strong>.`;
+            if (res.status === 'wrong_var') {
+                diagnostic = `I <strong>a)</strong> har du redan fått ${varName} = ${xA}. Nu söker du funktionsvärdet, så skriv <strong>${fnName}(${xA}) = ...</strong>.`;
             } else {
                 pulseCalculatorHint();
-                diagnostic = d2Current.type === 'givenX'
-                    ? `Kontrollera beräkningen: sätt in ${tpl.varName} = ${x} i <strong>${tpl.exprStr(k, m)}</strong>.`
-                    : `Kontrollera ekvationen: <strong>${tpl.exprStr(k, m)} = ${formatSvNum(y)}</strong>.`;
+                diagnostic = `Kontrollera beräkningen i <strong>a)</strong>: sätt in ${varName} = ${xA} i <strong>${tpl.exprStr(k, m)}</strong>.`;
             }
 
-            banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-2.5 text-sm dark:text-rose-200 text-rose-950 space-y-1.5";
+            banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-2 text-xs sm:text-sm dark:text-rose-200 text-rose-950 space-y-1.5";
+            msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mt-0.5"></i> <span>${diagnostic}</span>`;
+            banner.classList.remove('hidden');
+            nextRow.classList.add('hidden');
+        }
+
+        function checkD2PartB() {
+            if (!d2Current || !d2InterpretedA || d2SolvedB) return;
+
+            const input = document.getElementById('d2-input-b');
+            const userVal = input.value.trim();
+            const banner = document.getElementById('d2-feedback-banner');
+            const msg = document.getElementById('d2-feedback-msg');
+            const nextRow = document.getElementById('d2-next-row');
+
+            if (!userVal) {
+                banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-2 text-xs sm:text-sm dark:text-rose-200 text-rose-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mt-0.5"></i> <span>Skriv ditt svar på <strong>b)</strong> innan du rättar.</span>`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            const res = validateDirectAnswer(userVal, d2Current.validationB);
+            const { fnName, varName, xB, yB, k, m } = d2Current;
+            const isBGivenX = (d2Current.taskMode === 'writeAndApply' && d2Current.bKind === 'givenX');
+
+            if (res.status === 'ok') {
+                d2SolvedB = true;
+                registerCorrectAction();
+                input.disabled = true;
+                input.blur();
+                document.getElementById('d2-submit-b').disabled = true;
+
+                const headingB = d2Current.taskMode === 'writeAndApply'
+                    ? `Välj rätt tolkning:`
+                    : `Vad betyder ${d2Current.ansStrB} i det här sammanhanget?`;
+                const promptLeftB = d2Current.taskMode === 'writeAndApply'
+                    ? `Tolka vad dina svar betyder i det här sammanhanget.`
+                    : `Tolka vad ditt svar på b) (${d2Current.ansStrB}) betyder i sammanhanget.`;
+
+                renderD2MeaningOptions(d2Current.meaningOptionsB, headingB, promptLeftB);
+
+                banner.className = "dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-2 text-xs sm:text-sm dark:text-emerald-200 text-emerald-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i> <span><strong>Rätt på b)!</strong> (${d2Current.ansStrB}) Välj nu rätt tolkning ovan.</span>`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            if (res.status === 'missing_lhs') {
+                const exampleFmt = isBGivenX ? `<strong>${fnName}(${xB}) = ...</strong>` : `<strong>${varName} = ...</strong>`;
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Skriv hela uttrycket i <strong>b)</strong> med likhetstecken, t.ex. ${exampleFmt}.</span>`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            if (res.status === 'used_y') {
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Använd funktionens beteckning <strong>${fnName}(${varName})</strong> i stället för <strong>y</strong>.</span>`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            if (res.status === 'bad_lhs') {
+                const expectedHint = isBGivenX
+                    ? `Kontrollera vänsterledet i <strong>b)</strong> — här ska det stå <strong>${fnName}(${xB}) = ...</strong>.`
+                    : `Kontrollera vänsterledet i <strong>b)</strong> — här söker du <strong>${varName} = ...</strong>.`;
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>${expectedHint}</span>`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            if (res.status === 'unsimplified_expr') {
+                const exampleFmt = isBGivenX ? `<strong>${fnName}(${xB}) = ...</strong>` : `<strong>${varName} = ...</strong>`;
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>Räkna ut det sista steget till ett enda tal, t.ex. ${exampleFmt}.</span>`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            if (res.status === 'has_unit' || res.status === 'bad_unit') {
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-2 text-xs sm:text-sm dark:text-amber-200 text-amber-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mt-0.5"></i> <span>${res.msg}</span>`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            d2WrongCountB++;
+            d2Score = Math.max(0, d2Score - 1);
+            document.getElementById('d2-score').innerText = `Klarade: ${d2Score} / ${d2Target}`;
+            registerMistakeAction();
+
+            if (d2WrongCountB >= 2) revealD2Hint();
+
+            let diagnostic = "";
+            if (res.status === 'wrong_var' && isBGivenX) {
+                diagnostic = `Du har fått ${varName} = ${xB}. Sätt in ${xB} i funktionen och skriv <strong>${fnName}(${xB}) = ...</strong>.`;
+            } else if (res.status === 'wrong_var') {
+                diagnostic = `Du har fått funktionsvärdet ${formatSvNum(yB)}. Lös ekvationen <strong>${fnName}(${varName}) = ${formatSvNum(yB)}</strong> och skriv <strong>${varName} = ...</strong>.`;
+            } else {
+                pulseCalculatorHint();
+                const exprStr = d2Current.taskMode === 'writeAndApply'
+                    ? d2Current.ansStrA.split('=')[1].trim()
+                    : d2Current.tpl.exprStr(k, m);
+                diagnostic = isBGivenX
+                    ? `Kontrollera beräkningen i <strong>b)</strong>: sätt in ${varName} = ${xB} i <strong>${exprStr}</strong>.`
+                    : `Kontrollera ekvationen i <strong>b)</strong>: <strong>${exprStr} = ${formatSvNum(yB)}</strong>.`;
+            }
+
+            banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-2 text-xs sm:text-sm dark:text-rose-200 text-rose-950 space-y-1.5";
             msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mt-0.5"></i> <span>${diagnostic}</span>`;
             banner.classList.remove('hidden');
             nextRow.classList.add('hidden');
         }
 
         function answerD2Interpretation(idx) {
-            if (!d2Current || !d2SingleCalcSolved || d2QuestionCompleted) return;
-            const chosen = d2Current.meaningOptions[idx];
+            if (!d2Current || d2QuestionCompleted) return;
+
+            const isInterpA = (d2SolvedA && !d2InterpretedA);
+            const isInterpB = (d2SolvedB && !d2QuestionCompleted);
+            if (!isInterpA && !isInterpB) return;
+
+            const optionsList = isInterpA ? d2Current.meaningOptionsA : d2Current.meaningOptionsB;
+            const chosen = optionsList[idx];
             if (!chosen) return;
+
             const btn = document.getElementById(`d2-mopt-${idx}`);
             const banner = document.getElementById('d2-feedback-banner');
             const msg = document.getElementById('d2-feedback-msg');
             const nextRow = document.getElementById('d2-next-row');
 
             if (chosen.isCorrect) {
+                registerCorrectAction();
+
+                // Case 1: Completed interpretation of part a) -> Pin interpretation under a) and unlock part b)
+                if (isInterpA) {
+                    d2InterpretedA = true;
+
+                    const savedA = document.getElementById('d2-a-interp-saved');
+                    savedA.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mt-0.5 shrink-0"></i> <span><strong>Tolkning a):</strong> ${chosen.text}</span>`;
+                    savedA.classList.remove('hidden');
+
+                    document.getElementById('d2-interpret-box').classList.add('hidden');
+                    document.getElementById('d2-interpret-prompt').classList.add('hidden');
+                    document.getElementById('d2-hint-box').classList.add('hidden');
+                    document.getElementById('d2-hint-btn').classList.remove('hidden');
+
+                    // Reveal deluppgift b)
+                    document.getElementById('d2-prompt-b-wrap').classList.remove('hidden');
+                    document.getElementById('d2-row-b').classList.remove('hidden');
+                    document.getElementById('d2-right-subhint').innerText = `Nu b): skriv t.ex. ${d2Current.varName} = ...`;
+
+                    banner.className = "dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-2 text-xs sm:text-sm dark:text-emerald-200 text-emerald-950 space-y-1.5";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i> <span><strong>Rätt tolkning!</strong> Fortsätt nu med <strong>b)</strong> ovan.</span>`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+
+                    document.getElementById('d2-input-b').focus();
+                    return;
+                }
+
+                // Case 2: Completed interpretation of part b) -> Question finished!
                 d2QuestionCompleted = true;
                 d2Score++;
-                registerCorrectAction();
                 document.getElementById('d2-score').innerText = `Klarade: ${d2Score} / ${d2Target}`;
 
-                btn.className = "w-full text-left px-3 py-2 rounded-lg border-2 border-emerald-500 bg-emerald-500 text-slate-950 text-sm font-semibold transition leading-snug flex items-center gap-2.5";
-                d2Current.meaningOptions.forEach((_, i) => {
+                optionsList.forEach((_, i) => {
                     const b = document.getElementById(`d2-mopt-${i}`);
                     if (b) b.disabled = true;
                 });
+                btn.className = "w-full text-left px-3 py-1.5 rounded-lg border-2 border-emerald-500 bg-emerald-500 text-slate-950 text-xs sm:text-sm font-semibold transition leading-snug flex items-center gap-2.5";
 
-                banner.className = "dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-2.5 text-sm dark:text-emerald-200 text-emerald-950 space-y-1.5";
-                msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i> <span><strong>Helt rätt!</strong> ${d2Current.ansStr} — ${chosen.text}</span>`;
+                banner.className = "dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-2 text-xs sm:text-sm dark:text-emerald-200 text-emerald-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mt-0.5"></i> <span><strong>Helt rätt!</strong> ${chosen.text}</span>`;
                 banner.classList.remove('hidden');
 
                 if (d2Score >= d2Target && !d2MilestoneShown) {
@@ -2440,12 +3499,11 @@
                 document.getElementById('d2-score').innerText = `Klarade: ${d2Score} / ${d2Target}`;
                 registerMistakeAction();
 
-                btn.className = "w-full text-left px-3 py-2 rounded-lg border border-rose-500 bg-rose-500/20 dark:text-rose-300 text-rose-800 text-sm font-normal transition leading-snug flex items-center gap-2.5";
                 btn.disabled = true;
+                btn.className = "w-full text-left px-3 py-1.5 rounded-lg border border-rose-500 bg-rose-500/20 dark:text-rose-300 text-rose-800 text-xs sm:text-sm font-normal opacity-80 leading-snug flex items-center gap-2.5";
 
-                const { tpl } = d2Current.inst;
-                banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-2.5 text-sm dark:text-rose-200 text-rose-950 space-y-1.5";
-                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mt-0.5"></i> <span>Inte riktigt — kontrollera vilket tal som mäter ${tpl.unitPlur} och vilket som mäter ${tpl.yDisplayUnit}.</span>`;
+                banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-2 text-xs sm:text-sm dark:text-rose-200 text-rose-950 space-y-1.5";
+                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mt-0.5"></i> <span>Inte riktigt — blanda inte ihop enheterna för ${d2Current.tpl.unitPlur} (${d2Current.varName}) och ${d2Current.tpl.yDisplayUnit} (${d2Current.fnName}(${d2Current.varName})). Prova igen!</span>`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
             }
@@ -2462,146 +3520,7 @@
             generateNextDirectWorksheet();
         }
 
-        /* ---------------- TAB 3: FAS 3 — 3. Tolka ---------------- */
-        function generateFas1Problem() {
-            const subtype = drawNextBalancedType(f1TypeQueue, f1RecentTypes, 'notationToMeaning', 'textToNotation', 3);
-            const direction = drawNextBalancedType(f1DirQueue, f1RecentDirs, 'inc', 'dec', 3);
-            const inst = createRandomLinearInstance(f1LastScenarioId, true, direction);
-            f1LastScenarioId = inst.tpl.id;
-
-            const { tpl, k, m, x, y } = inst;
-            const fn = tpl.fnName;
-            const v = tpl.varName;
-            const scenarioText = tpl.intro(k, m);
-
-            if (subtype === 'notationToMeaning') {
-                const subMode = Math.random();
-                if (subMode < 0.45) {
-                    const prompt = `Vad betyder uttrycket ${fn}(${x}) = ${formatSvNum(y)}?`;
-                    const correct = tpl.meaningGivenX(x, y);
-                    const d1 = x === 0
-                        ? `Förändringen är ${formatSvNum(y)} ${tpl.yDisplayUnit} per ${tpl.unitSing}.`
-                        : `Vid ${formatSvNum(y)} ${tpl.unitPlur} är värdet ${x} ${tpl.yDisplayUnit}.`;
-                    const d1Hint = x === 0
-                        ? `Förändringen per ${tpl.unitSing} ges av lutningen (${formatSvNum(k)} ${tpl.yDisplayUnit}/${tpl.unitSing}). Uttrycket ${fn}(0) = ${formatSvNum(y)} visar startvärdet när ${v} = 0.`
-                        : `Talet i parentesen (${x}) är ${tpl.unitPlur} (${v}), medan ${formatSvNum(y)} är funktionsvärdet ${fn}(${x}) i ${tpl.yDisplayUnit} — här har enheterna blivit ombytta.`;
-
-                    const d2 = x === 0
-                        ? `Efter ${formatSvNum(y)} ${tpl.unitPlur} är värdet 0 ${tpl.yDisplayUnit}.`
-                        : `Startvärdet när ${v} = 0 är ${formatSvNum(y)} ${tpl.yDisplayUnit}.`;
-                    const d2Hint = x === 0
-                        ? `Här står det 0 i parentesen (${v} = 0), inte efter likhetstecknet. Alltså är det 0 ${tpl.unitPlur} som ger värdet ${formatSvNum(y)} ${tpl.yDisplayUnit}.`
-                        : `Startvärdet får du när ${v} = 0, alltså ${fn}(0). Här står det ${x} i parentesen, så värdet gäller vid ${x} ${x === 1 ? tpl.unitSing : tpl.unitPlur}.`;
-
-                    return {
-                        scenarioText,
-                        prompt,
-                        options: shuffleOptions([
-                            { text: correct, isCorrect: true },
-                            { text: d1, isCorrect: false, hint: d1Hint },
-                            { text: d2, isCorrect: false, hint: d2Hint }
-                        ])
-                    };
-                } else if (subMode < 0.78) {
-                    const prompt = `Du löser ekvationen ${fn}(${v}) = ${formatSvNum(y)} och får ${v} = ${x}. Vad betyder svaret?`;
-                    const correct = tpl.meaningGivenY(x, y);
-                    const d1 = `Vid ${formatSvNum(y)} ${tpl.unitPlur} är funktionsvärdet ${x} ${tpl.yDisplayUnit}.`;
-                    const d1Hint = `Du löste ut ${v} = ${x}, så ${x} mäter ${tpl.unitPlur}. Talet ${formatSvNum(y)} var funktionsvärdet i ${tpl.yDisplayUnit}.`;
-                    const d2 = `Förändringen per ${tpl.unitSing} är ${x} ${tpl.yDisplayUnit}.`;
-                    const d2Hint = `Förändringen per ${tpl.unitSing} avläses direkt framför ${v} i formeln (${formatSvNum(k)}). Lösningen ${v} = ${x} anger antalet ${tpl.unitPlur} då funktionsvärdet är ${formatSvNum(y)} ${tpl.yDisplayUnit}.`;
-
-                    return {
-                        scenarioText,
-                        prompt,
-                        options: shuffleOptions([
-                            { text: correct, isCorrect: true },
-                            { text: d1, isCorrect: false, hint: d1Hint },
-                            { text: d2, isCorrect: false, hint: d2Hint }
-                        ])
-                    };
-                } else {
-                    const prompt = `Vad anger talet ${formatSvNum(k)} i formeln ${fn}(${v}) = ${tpl.exprStr(k, m)}?`;
-                    const correct = tpl.rateMeaning(k);
-                    const d1 = `Startvärdet när ${v} = 0 är ${formatSvNum(k)} ${tpl.yDisplayUnit}.`;
-                    const d1Hint = `Startvärdet när ${v} = 0 är konstanttermen (${formatSvNum(m)} ${tpl.yDisplayUnit}). Talet ${formatSvNum(k)} står framför ${v} och visar förändringen per ${tpl.unitSing}.`;
-                    const d2 = `Det totala värdet efter ${formatSvNum(m)} ${tpl.unitPlur}.`;
-                    const d2Hint = `Talet ${formatSvNum(m)} är startvärdet i ${tpl.yDisplayUnit}, inte antalet ${tpl.unitPlur}. Talet ${formatSvNum(k)} anger hur mycket ${fn}(${v}) ändras per ${tpl.unitSing}.`;
-
-                    return {
-                        scenarioText,
-                        prompt,
-                        options: shuffleOptions([
-                            { text: correct, isCorrect: true },
-                            { text: d1, isCorrect: false, hint: d1Hint },
-                            { text: d2, isCorrect: false, hint: d2Hint }
-                        ])
-                    };
-                }
-            } else {
-                const subMode = Math.random();
-                if (tpl.direction === 'dec' && tpl.zeroQuestion && subMode < 0.35) {
-                    return {
-                        scenarioText,
-                        prompt: tpl.zeroQuestion,
-                        options: shuffleOptions([
-                            { text: `Lös ekvationen ${fn}(${v}) = 0`, isCorrect: true },
-                            {
-                                text: `Beräkna ${fn}(0)`,
-                                isCorrect: false,
-                                hint: `${fn}(0) beräknar startvärdet när ${v} = 0. Här vill du veta när funktionsvärdet har sjunkit till 0, så lös ${fn}(${v}) = 0.`
-                            },
-                            {
-                                text: `Lös ekvationen ${fn}(${v}) = ${formatSvNum(m)}`,
-                                isCorrect: false,
-                                hint: `${formatSvNum(m)} är startvärdet vid ${v} = 0. När det har tagit helt slut är funktionsvärdet 0, inte ${formatSvNum(m)}.`
-                            }
-                        ])
-                    };
-                } else if (subMode < 0.65) {
-                    const targetX = x === 0 ? 5 : x;
-                    const prompt = `Du vill ta reda på värdet efter ${targetX} ${targetX === 1 ? tpl.unitSing : tpl.unitPlur}. Vilket uttryck ska du beräkna?`;
-                    return {
-                        scenarioText,
-                        prompt,
-                        options: shuffleOptions([
-                            { text: `Beräkna ${fn}(${targetX})`, isCorrect: true },
-                            {
-                                text: `Lös ekvationen ${fn}(${v}) = ${targetX}`,
-                                isCorrect: false,
-                                hint: `${targetX} ${targetX === 1 ? tpl.unitSing : tpl.unitPlur} är ett ${v}-värde (variabeln), inte funktionsvärdet. Sätt därför in ${targetX} i parentesen: ${fn}(${targetX}).`
-                            },
-                            {
-                                text: `Beräkna ${fn}(${formatSvNum(m)})`,
-                                isCorrect: false,
-                                hint: `${formatSvNum(m)} är startvärdet i formeln, inte antalet ${tpl.unitPlur}. Byt i stället ut ${v} mot ${targetX} i ${fn}(${targetX}).`
-                            }
-                        ])
-                    };
-                } else {
-                    const targetX = x === 0 ? 5 : x;
-                    const targetY = Math.round((m + k * targetX) * 1000) / 1000;
-                    const prompt = `Du vill ta reda på för vilket ${v} funktionsvärdet blir ${formatSvNum(targetY)} ${tpl.yDisplayUnit}. Vilken ekvation ska du lösa?`;
-                    return {
-                        scenarioText,
-                        prompt,
-                        options: shuffleOptions([
-                            { text: `Lös ekvationen ${fn}(${v}) = ${formatSvNum(targetY)}`, isCorrect: true },
-                            {
-                                text: `Beräkna ${fn}(${formatSvNum(targetY)})`,
-                                isCorrect: false,
-                                hint: `${formatSvNum(targetY)} ${tpl.yDisplayUnit} är hela funktionsvärdet ${fn}(${v}), inte ${v}-värdet i ${tpl.unitPlur}. Ställ därför upp ekvationen ${fn}(${v}) = ${formatSvNum(targetY)}.`
-                            },
-                            {
-                                text: `Lös ekvationen ${fn}(${v}) = ${targetX}`,
-                                isCorrect: false,
-                                hint: `Efter likhetstecknet ska det givna funktionsvärdet (${formatSvNum(targetY)} ${tpl.yDisplayUnit}) stå, inte ${targetX}.`
-                            }
-                        ])
-                    };
-                }
-            }
-        }
-
+        /* ---------------- TAB 3: FAS 3 — 3. Tolka (6/6, BALANCED 2+2+2, MAX 2 IN A ROW) ---------------- */
         function shuffleOptions(arr) {
             const copy = [...arr];
             for (let i = copy.length - 1; i > 0; i--) {
@@ -2611,35 +3530,199 @@
             return copy;
         }
 
+        function generateFas1Problem() {
+            const qType = drawNextBalancedTriType(f1TypeQueue, f1RecentTypes, ['forward', 'backward', 'interpret'], 2);
+            const direction = drawNextBalancedType(f1DirQueue, f1RecentDirs, 'inc', 'dec', 3);
+
+            const inst = createRandomLinearInstance(f1LastScenarioId, false, direction);
+            f1LastScenarioId = inst.tpl.id;
+            const { tpl, k, m, x, y } = inst;
+            const fn = tpl.fnName;
+            const v = tpl.varName;
+
+            const scenarioText = tpl.intro(k, m);
+            let promptTitle = "";
+            let rawOptions = [];
+
+            if (qType === 'forward') {
+                const askStart = (Math.random() < 0.35);
+                if (askStart) {
+                    promptTitle = `${tpl.askStartText} Vilket uttryck visar rätt beräkning?`;
+                    rawOptions = [
+                        {
+                            text: `${fn}(0) = ${formatSvNum(m)}`,
+                            isCorrect: true,
+                            feedback: `Helt rätt! Startvärdet fås när ${v} = 0, alltså ${fn}(0) = ${formatSvNum(m)}.`
+                        },
+                        {
+                            text: `${fn}(${v}) = 0`,
+                            isCorrect: false,
+                            feedback: `Nej, ${fn}(${v}) = 0 söker när värdet blir noll — startvärdet är när ${v} = 0.`
+                        },
+                        {
+                            text: `${fn}(${formatSvNum(m)})`,
+                            isCorrect: false,
+                            feedback: `Nej, ${formatSvNum(m)} är funktionsvärdet vid start, inte värdet på ${v}.`
+                        }
+                    ];
+                } else {
+                    promptTitle = `${tpl.askForYText(x)} Vilken beräkning ska du göra?`;
+                    rawOptions = [
+                        {
+                            text: `Beräkna ${fn}(${x})`,
+                            isCorrect: true,
+                            feedback: `Helt rätt! Eftersom ${v} = ${x} (${tpl.unitPlur}) är givet sätter du in ${x} i funktionen.`
+                        },
+                        {
+                            text: `Lös ekvationen ${fn}(${v}) = ${x}`,
+                            isCorrect: false,
+                            feedback: `Nej, ${x} är antal ${tpl.unitPlur} (${v}), inte funktionsvärdet (${tpl.yDisplayUnit}).`
+                        },
+                        {
+                            text: `Beräkna ${fn}(0)`,
+                            isCorrect: false,
+                            feedback: `Nej, ${fn}(0) ger startvärdet vid 0 ${tpl.unitPlur}, inte vid ${x} ${tpl.unitPlur}.`
+                        }
+                    ];
+                }
+            } else if (qType === 'backward') {
+                if (tpl.direction === 'dec' && tpl.zeroQuestion && Math.random() < 0.45) {
+                    promptTitle = tpl.zeroQuestion;
+                    rawOptions = [
+                        {
+                            text: `Lös ekvationen ${fn}(${v}) = 0`,
+                            isCorrect: true,
+                            feedback: `Helt rätt! När det är helt slut är funktionsvärdet 0 (${tpl.yDisplayUnit}), så du löser ${fn}(${v}) = 0.`
+                        },
+                        {
+                            text: `Beräkna ${fn}(0)`,
+                            isCorrect: false,
+                            feedback: `Nej, ${fn}(0) ger hur mycket som fanns från början vid ${v} = 0.`
+                        },
+                        {
+                            text: `Lös ekvationen ${fn}(${v}) = ${formatSvNum(m)}`,
+                            isCorrect: false,
+                            feedback: `Nej, ${formatSvNum(m)} är startvärdet — när det är slut är funktionsvärdet 0.`
+                        }
+                    ];
+                } else {
+                    promptTitle = `${tpl.askForXText(y)} Vilken ekvation ska du lösa?`;
+                    rawOptions = [
+                        {
+                            text: `Lös ekvationen ${fn}(${v}) = ${formatSvNum(y)}`,
+                            isCorrect: true,
+                            feedback: `Helt rätt! Här är funktionsvärdet ${formatSvNum(y)} ${tpl.yDisplayUnit} känt, så du löser ${fn}(${v}) = ${formatSvNum(y)}.`
+                        },
+                        {
+                            text: `Beräkna ${fn}(${formatSvNum(y)})`,
+                            isCorrect: false,
+                            feedback: `Nej, ${formatSvNum(y)} är ${tpl.yDisplayUnit} (${fn}(${v})), inte ${tpl.unitPlur} (${v}).`
+                        },
+                        {
+                            text: `Beräkna ${fn}(0)`,
+                            isCorrect: false,
+                            feedback: `Nej, ${fn}(0) ger bara startvärdet (${formatSvNum(m)} ${tpl.yDisplayUnit}).`
+                        }
+                    ];
+                }
+            } else {
+                const subMode = Math.floor(Math.random() * 3);
+                if (subMode === 0) {
+                    promptTitle = `Vad betyder ${fn}(${x}) = ${formatSvNum(y)} i det här sammanhanget?`;
+                    rawOptions = [
+                        {
+                            text: tpl.meaningGivenX(x, y),
+                            isCorrect: true,
+                            feedback: `Helt rätt! ${v} = ${x} anger ${tpl.unitPlur} och ${fn}(${x}) = ${formatSvNum(y)} anger ${tpl.yDisplayUnit}.`
+                        },
+                        {
+                            text: tpl.meaningGivenX(y, x),
+                            isCorrect: false,
+                            feedback: `Du har bytt plats på variablerna! ${x} anger ${tpl.unitPlur} och ${formatSvNum(y)} anger ${tpl.yDisplayUnit}.`
+                        },
+                        {
+                            text: tpl.rateMeaning(k),
+                            isCorrect: false,
+                            feedback: `Nej, förändringen per ${tpl.unitSing} är ${formatSvNum(Math.abs(k))} ${tpl.yDisplayUnit}, inte ${formatSvNum(y)}.`
+                        }
+                    ];
+                } else if (subMode === 1) {
+                    promptTitle = `Vad anger talet ${formatSvNum(m)} i formeln ${fn}(${v}) = ${tpl.exprStr(k, m)}?`;
+                    rawOptions = [
+                        {
+                            text: tpl.meaningGivenX(0, m),
+                            isCorrect: true,
+                            feedback: `Helt rätt! Konstanten ${formatSvNum(m)} är startvärdet när ${v} = 0.`
+                        },
+                        {
+                            text: tpl.rateMeaning(k),
+                            isCorrect: false,
+                            feedback: `Nej, förändringen per ${tpl.unitSing} ges av koefficienten framför ${v}, inte av konstanten ${formatSvNum(m)}.`
+                        },
+                        {
+                            text: `Det tar ${formatSvNum(m)} ${tpl.unitPlur} innan värdet blir 0.`,
+                            isCorrect: false,
+                            feedback: `Nej, ${formatSvNum(m)} har enheten ${tpl.yDisplayUnit} och visar värdet vid start (${v} = 0).`
+                        }
+                    ];
+                } else {
+                    promptTitle = `Vad anger talet ${formatSvNum(k)} framför ${v} i formeln ${fn}(${v}) = ${tpl.exprStr(k, m)}?`;
+                    rawOptions = [
+                        {
+                            text: tpl.rateMeaning(k),
+                            isCorrect: true,
+                            feedback: `Helt rätt! Koefficienten ${formatSvNum(k)} visar hur mycket funktionsvärdet ändras per ${tpl.unitSing}.`
+                        },
+                        {
+                            text: tpl.meaningGivenX(0, m),
+                            isCorrect: false,
+                            feedback: `Nej, startvärdet vid ${v} = 0 är ${formatSvNum(m)}, inte ${formatSvNum(k)}.`
+                        },
+                        {
+                            text: tpl.meaningGivenX(Math.abs(k), m),
+                            isCorrect: false,
+                            feedback: `Nej, ${formatSvNum(k)} är förändringen per ${tpl.unitSing} (lutningen k).`
+                        }
+                    ];
+                }
+            }
+
+            return {
+                scenarioText,
+                promptTitle,
+                options: shuffleOptions(rawOptions)
+            };
+        }
+
         function nextFas1Question() {
             f1Current = generateFas1Problem();
             f1Answered = false;
 
             document.getElementById('f1-scenario-text').innerText = f1Current.scenarioText;
-            document.getElementById('f1-prompt-title').innerText = f1Current.prompt;
-            document.getElementById('f1-feedback-box').classList.add('hidden');
-            document.getElementById('f1-next-btn').classList.add('hidden');
-            document.getElementById('f1-milestone-banner').classList.add('hidden');
+            document.getElementById('f1-prompt-title').innerText = f1Current.promptTitle;
 
             const grid = document.getElementById('f1-options-grid');
             grid.innerHTML = f1Current.options.map((opt, idx) => `
                 <button id="f1-opt-${idx}" onclick="answerFas1(${idx})"
-                        class="w-full text-left px-3.5 py-2.5 rounded-xl border dark:border-slate-700 border-slate-300 dark:bg-slate-900 bg-slate-50 dark:text-slate-100 text-slate-900 hover:border-indigo-500 text-base font-normal transition flex items-center gap-3">
-                    <span class="w-6 h-6 rounded-md bg-indigo-600/20 dark:text-indigo-400 text-indigo-700 border border-indigo-500/40 flex items-center justify-center text-xs font-semibold shrink-0">${idx + 1}</span>
+                        class="w-full text-left px-4 py-2.5 rounded-xl border-2 dark:border-slate-700 border-slate-300 dark:bg-slate-900 bg-slate-50 dark:text-slate-100 text-slate-900 hover:border-indigo-500 text-sm sm:text-base font-normal transition flex items-center gap-3 leading-snug">
+                    <span class="w-6 h-6 rounded-lg bg-indigo-600/20 dark:text-indigo-400 text-indigo-700 border border-indigo-500/40 flex items-center justify-center text-xs font-semibold shrink-0">${idx + 1}</span>
                     <span>${opt.text}</span>
                 </button>
             `).join('');
+
+            document.getElementById('f1-feedback-box').classList.add('hidden');
+            document.getElementById('f1-next-btn').classList.add('hidden');
+            document.getElementById('f1-milestone-banner').classList.add('hidden');
         }
 
         function answerFas1(idx) {
             if (!f1Current || f1Answered) return;
-            const chosen = f1Current.options[idx];
-            if (!chosen) return;
 
+            const chosen = f1Current.options[idx];
+            const btn = document.getElementById(`f1-opt-${idx}`);
             const fbBox = document.getElementById('f1-feedback-box');
             const fbText = document.getElementById('f1-feedback-text');
             const nextBtn = document.getElementById('f1-next-btn');
-            const btn = document.getElementById(`f1-opt-${idx}`);
 
             fbBox.classList.remove('hidden');
 
@@ -2649,14 +3732,15 @@
                 registerCorrectAction();
                 document.getElementById('f1-score').innerText = `Framsteg: ${f1Score} / ${f1Target}`;
 
-                btn.className = "w-full text-left px-3.5 py-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-500 text-slate-950 text-base font-semibold transition flex items-center gap-3";
                 f1Current.options.forEach((_, i) => {
                     const b = document.getElementById(`f1-opt-${i}`);
-                    if (b) b.disabled = true;
+                    b.disabled = true;
                 });
 
+                btn.className = "w-full text-left px-4 py-2.5 rounded-xl border-2 border-emerald-500 bg-emerald-500 text-slate-950 text-sm sm:text-base font-semibold transition flex items-center gap-3 leading-snug";
+
                 fbBox.className = "w-full rounded-xl px-3.5 py-2 text-sm font-normal flex items-center justify-between gap-2 dark:bg-emerald-950/90 bg-emerald-100 border border-emerald-500 dark:text-emerald-200 text-emerald-950";
-                fbText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> <strong>Rätt!</strong>`;
+                fbText.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> ${chosen.feedback}`;
 
                 if (f1Score >= f1Target && !f1MilestoneShown) {
                     unlockPhase4();
@@ -2669,11 +3753,11 @@
                 document.getElementById('f1-score').innerText = `Framsteg: ${f1Score} / ${f1Target}`;
                 registerMistakeAction();
 
-                btn.className = "w-full text-left px-3.5 py-2.5 rounded-xl border border-rose-500 bg-rose-500/20 dark:text-rose-300 text-rose-800 text-base font-normal transition flex items-center gap-3";
                 btn.disabled = true;
-                const hintText = chosen.hint || "Kontrollera vad variabeln inom parentesen respektive hela funktionsvärdet står för.";
+                btn.className = "w-full text-left px-4 py-2.5 rounded-xl border-2 border-rose-500 bg-rose-500/20 dark:text-rose-300 text-rose-800 text-sm sm:text-base font-normal transition flex items-center gap-3 opacity-80 leading-snug";
+
                 fbBox.className = "w-full rounded-xl px-3.5 py-2 text-sm font-normal flex items-center justify-between gap-2 dark:bg-rose-950/90 bg-rose-100 border border-rose-500 dark:text-rose-200 text-rose-950";
-                fbText.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> <strong>Inte riktigt</strong> — ${hintText}`;
+                fbText.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> ${chosen.feedback}`;
                 nextBtn.classList.add('hidden');
             }
         }
@@ -2689,151 +3773,204 @@
             nextFas1Question();
         }
 
-        /* ---------------- TAB 4: FAS 4 — 4. Utmaning (LINEAR ONLY) ---------------- */
+        /* ---------------- TAB 4: FAS 4 — 4. Utmaning (6/6, TWO-COLUMN, LINEAR COMPARISONS, INTERVALS & TWO-STEP MODELING) ---------------- */
         function generateF5Problem() {
-            const subtype = drawNextBalancedType(f5TypeQueue, f5RecentTypes, 'compare', 'intervalDiff', 3);
+            const cType = drawNextBalancedTriType(f5TypeQueue, f5RecentTypes, ['compareEqual', 'diffInterval', 'twoStepModel'], 2);
 
-            if (subtype === 'compare') {
-                const templates = [
-                    {
-                        k1Pool: [65, 75, 85],
-                        diffPool: [20, 25, 35],
-                        xUnitPlur: 'besök',
-                        xUnits: ['besök'],
-                        xCountable: true,
-                        build: (k1, k2, m2, x, interY) => ({
-                            intro: `På ett badhus ges kostnaden K₁(x) kr för engångsbiljetter av K₁(x) = ${k1}x och för rabattkort av K₂(x) = ${k2}x + ${m2}, där x är antalet besök.`,
-                            meaning: `Vid ${x} besök kostar båda alternativen lika mycket (${formatSvNum(interY)} kr).`,
-                            d1: `Rabattkortet kostar ${x} kr mer än engångsbiljetter.`,
-                            d2: `Vid ${formatSvNum(interY)} besök kostar båda alternativen ${x} kr.`
-                        })
-                    },
-                    {
-                        k1Pool: [95, 110, 125],
-                        diffPool: [25, 30, 40],
-                        xUnitPlur: 'tillfällen',
-                        xUnits: ['tillfälle', 'tillfällen'],
-                        xCountable: true,
-                        build: (k1, k2, m2, x, interY) => ({
-                            intro: `På en klätterhall ges kostnaden K₁(x) kr för drop-in av K₁(x) = ${k1}x och för klippkort av K₂(x) = ${k2}x + ${m2}, där x är antalet tillfällen.`,
-                            meaning: `Vid ${x} tillfällen kostar båda alternativen lika mycket (${formatSvNum(interY)} kr).`,
-                            d1: `Klippkortet räcker till högst ${x} tillfällen.`,
-                            d2: `Varje klättertillfälle kostar ${x} kr.`
-                        })
-                    },
-                    {
-                        k1Pool: [55, 65, 75],
-                        diffPool: [15, 25, 35],
-                        xUnitPlur: 'filmer',
-                        xUnits: ['film', 'filmer'],
-                        xCountable: true,
-                        build: (k1, k2, m2, x, interY) => ({
-                            intro: `För en filmuthyrning ges kostnaden K₁(x) kr för hyrfilm av K₁(x) = ${k1}x och för abonnemang av K₂(x) = ${k2}x + ${m2}, där x är antalet filmer.`,
-                            meaning: `Vid ${x} filmer kostar båda alternativen lika mycket (${formatSvNum(interY)} kr).`,
-                            d1: `Abonnemanget kostar ${x} kr i månaden.`,
-                            d2: `Vid ${formatSvNum(interY)} filmer kostar båda alternativen ${x} kr.`
-                        })
-                    }
-                ];
-
-                const tpl = pickRandom(templates);
-                const k1 = pickRandom(tpl.k1Pool);
-                const diff = pickRandom(tpl.diffPool);
-                const k2 = k1 - diff;
-                const x = Math.floor(Math.random() * 6) + 5; // 5 to 10
-                const m2 = diff * x;
-                const interY = k1 * x;
-                const copy = tpl.build(k1, k2, m2, x, interY);
-
-                const meaningOptions = shuffleOptions([
-                    { text: copy.meaning, isCorrect: true },
-                    { text: copy.d1, isCorrect: false },
-                    { text: copy.d2, isCorrect: false }
-                ]);
-
-                return {
-                    subtype: 'compareIntersection',
-                    fnName: null,
-                    varName: 'x',
-                    scenarioText: copy.intro,
-                    questionTitle: `Lös ekvationen K₁(x) = K₂(x)`,
-                    ansStr: `x = ${x} ${tpl.xUnitPlur}`,
-                    hintStr: `Sätt uttrycken lika med varandra: ${k1}x = ${k2}x + ${m2}`,
-                    meaningOptions,
-                    validationOpts: {
-                        expectedLhsList: ['x'],
-                        wrongLhsPrefixes: ['k'],
-                        expectedNum: x,
-                        validUnits: tpl.xUnits,
-                        displayUnit: tpl.xUnitPlur,
-                        countable: tpl.xCountable,
-                        unitPlural: tpl.xUnitPlur
-                    }
-                };
-            } else {
+            if (cType === 'compareEqual') {
                 if (Math.random() < 0.5) {
-                    const k1 = pickRandom([85, 95, 115]);
-                    const k2 = k1 - 35;
-                    const m2 = 175;
-                    const evalX = pickRandom([7, 8, 9]);
-                    const cost1 = k1 * evalX;
-                    const cost2 = k2 * evalX + m2;
-                    const saved = cost1 - cost2;
-
+                    const presets = [
+                        { mA: 200, kA: 80, mB: 500, kB: 30, t: 6 },
+                        { mA: 150, kA: 90, mB: 450, kB: 40, t: 6 },
+                        { mA: 100, kA: 75, mB: 340, kB: 35, t: 6 },
+                        { mA: 120, kA: 65, mB: 360, kB: 35, t: 8 },
+                        { mA: 180, kA: 70, mB: 420, kB: 40, t: 8 }
+                    ];
+                    const p = pickRandom(presets);
+                    const cost = p.mA + p.kA * p.t;
                     return {
-                        subtype: 'compareDiff',
-                        fnName: null,
-                        varName: 'x',
-                        scenarioText: `På ett gym ges kostnaden K₁(x) kr för engångsträning av K₁(x) = ${k1}x och för medlemskort av K₂(x) = ${k2}x + ${m2}, där x är antalet träningspass.`,
-                        questionTitle: `Hur mycket billigare är medlemskortet än engångsträning vid ${evalX} träningspass?`,
-                        ansStr: `${formatSvNum(saved)} kr`,
-                        hintStr: `Beräkna K₁(${evalX}) = ${cost1} kr och K₂(${evalX}) = ${cost2} kr, och räkna ut skillnaden K₁(${evalX}) ${MINUS} K₂(${evalX}).`,
+                        cType: 'compareEqual',
+                        isFormula: false,
+                        fnName: 'K',
+                        varName: 't',
+                        scenarioText: `Två cykeluthyrare har olika prismodeller. Hos uthyrare A ges kostnaden av K_A(t) = ${p.kA}t + ${p.mA} kr och hos uthyrare B ges kostnaden av K_B(t) = ${p.kB}t + ${p.mB} kr, där t är antalet timmar.`,
+                        promptTitle: `Efter hur många timmar t blir den totala kostnaden exakt lika stor hos båda uthyrarna?`,
+                        formatHint: `Svara med t = ...:`,
+                        hintText: `Sätt funktionsuttrycken lika med varandra: ${p.kA}t + ${p.mA} = ${p.kB}t + ${p.mB} och lös ut t.`,
+                        ansDisplay: `t = ${p.t} timmar`,
+                        validation: {
+                            requireEquals: true,
+                            expectedLhsList: ['t'],
+                            wrongLhsPrefixes: ['k'],
+                            expectedNum: p.t,
+                            forbidUnit: false,
+                            validUnits: ['timme', 'timmar', 'h'],
+                            unitPlural: 'timmar',
+                            displayUnit: 'timmar',
+                            countable: false
+                        },
                         meaningOptions: shuffleOptions([
-                            { text: `Vid ${evalX} träningspass sparar man ${formatSvNum(saved)} kr på att välja medlemskortet.`, isCorrect: true },
-                            { text: `Medlemskortet kostar totalt ${formatSvNum(saved)} kr för ${evalX} pass.`, isCorrect: false },
-                            { text: `Vid ${formatSvNum(saved)} träningspass kostar båda alternativen ${evalX} kr.`, isCorrect: false }
-                        ]),
-                        validationOpts: {
-                            expectedLhsList: [],
-                            wrongLhsPrefixes: ['x'],
-                            expectedNum: saved,
-                            validUnits: ['kr', 'kronor'],
-                            displayUnit: 'kr',
-                            countable: false,
-                            unitPlural: 'kr'
-                        }
+                            { text: `Efter ${p.t} timmar kostar båda uthyrarna lika mycket (${formatSvNum(cost)} kr).`, isCorrect: true },
+                            { text: `Efter ${formatSvNum(cost)} timmar kostar båda uthyrarna ${p.t} kr.`, isCorrect: false },
+                            { text: `Uthyrare A är alltid ${p.t} kr billigare än uthyrare B.`, isCorrect: false }
+                        ])
                     };
                 } else {
-                    const v0 = pickRandom([540, 620, 740]);
-                    const rate = pickRandom([28, 32, 36]);
-                    const t1 = 3;
-                    const t2 = pickRandom([8, 9, 11]);
-                    const drained = rate * (t2 - t1);
-
+                    const presets = [
+                        { mA: 600, kA: 30, mB: 420, kB: 15, t: 12 },
+                        { mA: 500, kA: 25, mB: 320, kB: 10, t: 12 },
+                        { mA: 480, kA: 35, mB: 330, kB: 20, t: 10 },
+                        { mA: 450, kA: 30, mB: 270, kB: 12, t: 10 }
+                    ];
+                    const p = pickRandom(presets);
+                    const vol = p.mA - p.kA * p.t;
                     return {
-                        subtype: 'intervalChange',
+                        cType: 'compareEqual',
+                        isFormula: false,
                         fnName: 'V',
                         varName: 't',
-                        scenarioText: `Volymen V(t) liter vatten kvar i en tank efter t minuter ges av V(t) = ${v0} ${MINUS} ${rate}t.`,
-                        questionTitle: `Hur många liter vatten rinner ut ur tanken mellan t = ${t1} och t = ${t2} minuter?`,
-                        ansStr: `${formatSvNum(drained)} liter`,
-                        hintStr: `Beräkna V(${t1}) = ${v0 - rate * t1} liter och V(${t2}) = ${v0 - rate * t2} liter, och ta skillnaden V(${t1}) ${MINUS} V(${t2}).`,
+                        scenarioText: `Två vattentankar töms samtidigt. Volymen i tank A ges av V_A(t) = ${p.mA} ${MINUS} ${p.kA}t liter och volymen i tank B ges av V_B(t) = ${p.mB} ${MINUS} ${p.kB}t liter efter t minuter.`,
+                        promptTitle: `Efter hur många minuter t innehåller båda tankarna exakt lika mycket vatten?`,
+                        formatHint: `Svara med t = ...:`,
+                        hintText: `Sätt volymerna lika: ${p.mA} ${MINUS} ${p.kA}t = ${p.mB} ${MINUS} ${p.kB}t och lös ut t.`,
+                        ansDisplay: `t = ${p.t} minuter`,
+                        validation: {
+                            requireEquals: true,
+                            expectedLhsList: ['t'],
+                            wrongLhsPrefixes: ['v'],
+                            expectedNum: p.t,
+                            forbidUnit: false,
+                            validUnits: ['minut', 'minuter', 'min'],
+                            unitPlural: 'minuter',
+                            displayUnit: 'minuter',
+                            countable: false
+                        },
                         meaningOptions: shuffleOptions([
-                            { text: `Under de ${t2 - t1} minuterna mellan t = ${t1} och t = ${t2} rinner det ut ${formatSvNum(drained)} liter vatten.`, isCorrect: true },
-                            { text: `Efter ${t2} minuter finns det ${formatSvNum(drained)} liter vatten kvar i tanken.`, isCorrect: false },
-                            { text: `Det rinner ut ${formatSvNum(drained)} liter vatten varje minut.`, isCorrect: false }
-                        ]),
-                        validationOpts: {
-                            expectedLhsList: [],
-                            wrongLhsPrefixes: ['t'],
-                            expectedNum: drained,
-                            validUnits: ['liter', 'l'],
-                            displayUnit: 'liter',
-                            countable: false,
-                            unitPlural: 'liter'
-                        }
+                            { text: `Efter ${p.t} minuter innehåller båda tankarna ${formatSvNum(vol)} liter vatten var.`, isCorrect: true },
+                            { text: `Efter ${formatSvNum(vol)} minuter innehåller båda tankarna ${p.t} liter vatten.`, isCorrect: false },
+                            { text: `Båda tankarna är helt tomma efter ${p.t} minuter.`, isCorrect: false }
+                        ])
                     };
                 }
+            }
+
+            if (cType === 'diffInterval') {
+                if (Math.random() < 0.5) {
+                    const k = pickRandom([15, 20, 25]);
+                    const m = pickRandom([600, 750, 800]);
+                    const t1 = pickRandom([4, 6]);
+                    const t2 = t1 + pickRandom([6, 8]);
+                    const diff = k * (t2 - t1);
+                    return {
+                        cType: 'diffInterval',
+                        isFormula: false,
+                        fnName: 'V',
+                        varName: 't',
+                        scenarioText: `Volymen vatten i en bassäng ges av V(t) = ${m} + ${k}t liter, där t är tiden i minuter efter att påfyllningen startade.`,
+                        promptTitle: `Hur många liter vatten fylls på i bassängen mellan t = ${t1} och t = ${t2} minuter (beräkna V(${t2}) ${MINUS} V(${t1}))?`,
+                        formatHint: `Skriv ditt svar (t.ex. ${diff} liter):`,
+                        hintText: `Beräkna V(${t2}) = ${m} + ${k} · ${t2} och V(${t1}) = ${m} + ${k} · ${t1}, och ta sedan skillnaden V(${t2}) ${MINUS} V(${t1}).`,
+                        ansDisplay: `${diff} liter`,
+                        validation: {
+                            requireEquals: false,
+                            expectedLhsList: [],
+                            wrongLhsPrefixes: [],
+                            expectedNum: diff,
+                            forbidUnit: false,
+                            validUnits: ['liter', 'l'],
+                            unitPlural: 'liter',
+                            displayUnit: 'liter',
+                            countable: false
+                        },
+                        meaningOptions: shuffleOptions([
+                            { text: `Under de ${t2 - t1} minuterna mellan t = ${t1} och t = ${t2} ökar volymen med ${diff} liter.`, isCorrect: true },
+                            { text: `Efter ${t2} minuter finns det totalt ${diff} liter vatten i bassängen.`, isCorrect: false },
+                            { text: `Det fylls på ${diff} liter vatten varje minut.`, isCorrect: false }
+                        ])
+                    };
+                } else {
+                    const k = pickRandom([35, 40, 45]);
+                    const m = pickRandom([120, 150, 180]);
+                    const x1 = pickRandom([2, 3]);
+                    const x2 = x1 + pickRandom([4, 5]);
+                    const diff = k * (x2 - x1);
+                    return {
+                        cType: 'diffInterval',
+                        isFormula: false,
+                        fnName: 'K',
+                        varName: 'x',
+                        scenarioText: `Kostnaden K(x) kr för att hyra ett släp i x timmar ges av K(x) = ${k}x + ${m}.`,
+                        promptTitle: `Hur mycket dyrare blir det att hyra släpet i ${x2} timmar jämfört med ${x1} timmar (beräkna K(${x2}) ${MINUS} K(${x1}))?`,
+                        formatHint: `Skriv ditt svar (t.ex. ${diff} kr):`,
+                        hintText: `Beräkna K(${x2}) = ${k} · ${x2} + ${m} och K(${x1}) = ${k} · ${x1} + ${m}, och subtrahera sedan K(${x2}) ${MINUS} K(${x1}).`,
+                        ansDisplay: `${diff} kr`,
+                        validation: {
+                            requireEquals: false,
+                            expectedLhsList: [],
+                            wrongLhsPrefixes: [],
+                            expectedNum: diff,
+                            forbidUnit: false,
+                            validUnits: ['kr', 'kronor'],
+                            unitPlural: 'kr',
+                            displayUnit: 'kr',
+                            countable: false
+                        },
+                        meaningOptions: shuffleOptions([
+                            { text: `De ${x2 - x1} extra timmarna kostar sammanlagt ${diff} kr mer.`, isCorrect: true },
+                            { text: `Att hyra släpet i ${x2} timmar kostar totalt ${diff} kr.`, isCorrect: false },
+                            { text: `Startavgiften för att hyra släpet är ${diff} kr.`, isCorrect: false }
+                        ])
+                    };
+                }
+            }
+
+            // Type 3: twoStepModel — Write a function from TWO points / step-by-step scenario
+            if (Math.random() < 0.5) {
+                const startFee = pickRandom([200, 250, 300]);
+                const hourly = pickRandom([350, 400, 450]);
+                const hoursGiven = 3;
+                const totalGiven = startFee + hourly * hoursGiven;
+                return {
+                    cType: 'twoStepModel',
+                    isFormula: true,
+                    fnName: 'K',
+                    varName: 't',
+                    expectedK: hourly,
+                    expectedM: startFee,
+                    scenarioText: `En tekniker tar ${startFee} kr i fast framkörningsavgift samt en fast timkostnad. Ett uppdrag som tog ${hoursGiven} timmar kostade sammanlagt ${formatSvNum(totalGiven)} kr.`,
+                    promptTitle: `Bestäm timkostnaden och skriv funktionen K(t) för den totala kostnaden i kronor efter t timmar.`,
+                    formatHint: `Skriv hela funktionen K(t) = ...:`,
+                    hintText: `Dra först bort framkörningsavgiften: ${formatSvNum(totalGiven)} ${MINUS} ${startFee} = ${formatSvNum(totalGiven - startFee)} kr för ${hoursGiven} timmar, vilket ger ${hourly} kr/timme. Då blir K(t) = ${hourly}t + ${startFee}.`,
+                    ansDisplay: `K(t) = ${hourly}t + ${startFee}`,
+                    meaningOptions: shuffleOptions([
+                        { text: `Startavgiften är ${startFee} kr (vid t = 0) och kostnaden ökar med ${hourly} kr per timme.`, isCorrect: true },
+                        { text: `Startavgiften är ${hourly} kr och kostnaden ökar med ${startFee} kr per timme.`, isCorrect: false },
+                        { text: `Efter ${startFee} timmar kostar uppdraget ${hourly} kr.`, isCorrect: false }
+                    ])
+                };
+            } else {
+                const m = pickRandom([600, 750, 900]);
+                const rate = pickRandom([25, 30, 40]);
+                const tGiven = 4;
+                const remGiven = m - rate * tGiven;
+                return {
+                    cType: 'twoStepModel',
+                    isFormula: true,
+                    fnName: 'V',
+                    varName: 't',
+                    expectedK: -rate,
+                    expectedM: m,
+                    scenarioText: `En vattentank innehöll ${m} liter vatten från början och töms med konstant hastighet. Efter ${tGiven} minuter finns det ${remGiven} liter vatten kvar i tanken.`,
+                    promptTitle: `Bestäm tömningshastigheten och skriv funktionen V(t) för antalet liter vatten kvar efter t minuter.`,
+                    formatHint: `Skriv hela funktionen V(t) = ...:`,
+                    hintText: `På ${tGiven} minuter har det runnit ut ${m} ${MINUS} ${remGiven} = ${m - remGiven} liter, alltså ${rate} liter/minut. Då blir V(t) = ${m} ${MINUS} ${rate}t.`,
+                    ansDisplay: `V(t) = ${m} ${MINUS} ${rate}t`,
+                    meaningOptions: shuffleOptions([
+                        { text: `Tanken börjar med ${m} liter vatten och minskar med ${rate} liter per minut.`, isCorrect: true },
+                        { text: `Tanken börjar med ${rate} liter vatten och fylls på med ${m} liter per minut.`, isCorrect: false },
+                        { text: `Efter ${rate} minuter finns det ${m} liter vatten kvar i tanken.`, isCorrect: false }
+                    ])
+                };
             }
         }
 
@@ -2844,64 +3981,57 @@
             f5WrongCount = 0;
 
             document.getElementById('f5-scenario-text').innerText = f5Current.scenarioText;
-            document.getElementById('f5-title').innerText = f5Current.questionTitle;
-            document.getElementById('f5-interpret-prompt').classList.add('hidden');
-            document.getElementById('f5-hint-box').classList.add('hidden');
-            document.getElementById('f5-hint-btn').classList.remove('hidden');
+            document.getElementById('f5-title').innerText = f5Current.promptTitle;
+            document.getElementById('f5-format-hint').innerText = f5Current.formatHint;
 
             const btnFn = document.getElementById('f5-btn-fn');
             const btnVar = document.getElementById('f5-btn-var');
-            if (f5Current.fnName && f5Current.subtype !== 'intervalChange') {
-                btnFn.innerText = `${f5Current.fnName}() =`;
+            if (f5Current.isFormula) {
+                btnFn.innerText = `${f5Current.fnName}(${f5Current.varName}) =`;
                 btnFn.classList.remove('hidden');
-            } else {
+                btnVar.classList.add('hidden');
+            } else if (f5Current.cType === 'compareEqual') {
                 btnFn.classList.add('hidden');
-            }
-            if (f5Current.subtype === 'compareIntersection') {
                 btnVar.innerText = `${f5Current.varName} =`;
                 btnVar.classList.remove('hidden');
             } else {
+                btnFn.classList.add('hidden');
                 btnVar.classList.add('hidden');
             }
 
+            document.getElementById('f5-hint-box').classList.add('hidden');
+            document.getElementById('f5-hint-btn').classList.remove('hidden');
+            document.getElementById('f5-interpret-prompt').classList.add('hidden');
             document.getElementById('f5-interpret-box').classList.add('hidden');
-            document.getElementById('f5-feedback-banner').classList.add('hidden');
-            document.getElementById('f5-celebration-banner').classList.add('hidden');
-            document.getElementById('f5-next-row').classList.add('hidden');
 
-            renderF5MeaningOptions();
-
-            const input = document.getElementById('f5-input-ans');
-            input.value = '';
-            input.disabled = false;
+            const inp = document.getElementById('f5-input-ans');
+            inp.value = '';
+            inp.disabled = false;
             document.getElementById('f5-submit-btn').disabled = false;
-            if (activeTab === 4) input.focus();
+
+            document.getElementById('f5-feedback-banner').classList.add('hidden');
+            document.getElementById('f5-next-row').classList.add('hidden');
+            document.getElementById('f5-celebration-banner').classList.add('hidden');
+
+            if (activeTab === 4) inp.focus();
         }
 
         function revealF5Hint() {
             if (!f5Current) return;
-            document.getElementById('f5-hint-text').innerText = f5Current.hintStr;
+            document.getElementById('f5-hint-text').innerText = f5Current.hintText;
             document.getElementById('f5-hint-box').classList.remove('hidden');
             document.getElementById('f5-hint-btn').classList.add('hidden');
         }
 
-        function renderF5MeaningOptions() {
-            const box = document.getElementById('f5-meaning-options');
-            box.innerHTML = f5Current.meaningOptions.map((opt, idx) => `
-                <button id="f5-mopt-${idx}" onclick="answerF5Interpretation(${idx})"
-                        class="w-full text-left px-3 py-2 rounded-lg border dark:border-slate-700 border-slate-300 dark:bg-slate-950 bg-white dark:text-slate-100 text-slate-900 hover:border-indigo-500 text-sm font-normal transition leading-snug">
-                    ${opt.text}
-                </button>
-            `).join('');
-        }
-
         function insertF5FuncPrefix() {
-            if (!f5Current || !f5Current.fnName) return;
+            if (!f5Current) return;
             const input = document.getElementById('f5-input-ans');
             if (input.disabled) return;
-            input.value = `${f5Current.fnName}() = `;
-            input.focus();
-            input.setSelectionRange(f5Current.fnName.length + 1, f5Current.fnName.length + 1);
+            if (f5Current.isFormula) {
+                input.value = `${f5Current.fnName}(${f5Current.varName}) = `;
+                input.focus();
+                input.setSelectionRange(input.value.length, input.value.length);
+            }
         }
 
         function insertF5VarPrefix() {
@@ -2912,44 +4042,172 @@
             input.focus();
         }
 
+        function showF5InterpretationStep() {
+            f5CalcSolved = true;
+            document.getElementById('f5-interpret-prompt').classList.remove('hidden');
+
+            const box = document.getElementById('f5-meaning-options');
+            box.innerHTML = f5Current.meaningOptions.map((opt, idx) => `
+                <button id="f5-mopt-${idx}" onclick="answerF5Interpretation(${idx})"
+                        class="w-full text-left px-3 py-2 rounded-lg border dark:border-slate-700 border-slate-300 dark:bg-slate-950 bg-white dark:text-slate-100 text-slate-900 hover:border-indigo-500 text-xs sm:text-sm font-normal transition leading-snug flex items-center gap-2.5">
+                    <span class="w-5 h-5 rounded bg-indigo-600/20 dark:text-indigo-400 text-indigo-700 border border-indigo-500/40 flex items-center justify-center text-xs font-semibold shrink-0">${idx + 1}</span>
+                    <span>${opt.text}</span>
+                </button>
+            `).join('');
+
+            document.getElementById('f5-interpret-box').classList.remove('hidden');
+            document.getElementById('f5-input-ans').blur();
+        }
+
         function checkF5Answer() {
             if (!f5Current || f5CalcSolved) return;
             const input = document.getElementById('f5-input-ans');
-            const raw = input.value.trim();
+            const userVal = input.value.trim();
             const banner = document.getElementById('f5-feedback-banner');
             const msg = document.getElementById('f5-feedback-msg');
             const nextRow = document.getElementById('f5-next-row');
 
-            if (!raw) {
-                banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1"></i> Skriv ditt svar i rutan innan du rättar.`;
+            if (!userVal) {
+                banner.className = "dark:bg-rose-950/90 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> Skriv ditt svar innan du rättar.`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
-            const res = validateDirectAnswer(raw, f5Current.validationOpts);
+            if (f5Current.isFormula) {
+                const res = validateLinearFormulaAnswer(userVal, {
+                    fnName: f5Current.fnName,
+                    varName: f5Current.varName,
+                    expectedK: f5Current.expectedK,
+                    expectedM: f5Current.expectedM
+                });
+
+                if (res.status === 'ok') {
+                    registerCorrectAction();
+                    input.disabled = true;
+                    document.getElementById('f5-submit-btn').disabled = true;
+
+                    banner.className = "dark:bg-emerald-950/90 bg-emerald-100 border border-emerald-500 rounded-xl p-3 text-sm dark:text-emerald-200 text-emerald-950 space-y-2";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> <strong>Rätt funktion!</strong> (${f5Current.ansDisplay}) Välj nu rätt tolkning ovan.`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+                    showF5InterpretationStep();
+                    return;
+                }
+
+                if (res.status === 'missing_lhs') {
+                    banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Skriv hela funktionsuttrycket med likhetstecken, t.ex. <strong>${f5Current.fnName}(${f5Current.varName}) = ...</strong>.`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+                    return;
+                }
+
+                if (res.status === 'used_y') {
+                    banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Använd funktionens namn <strong>${f5Current.fnName}(${f5Current.varName})</strong> i stället för <strong>y</strong>.`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+                    return;
+                }
+
+                if (res.status === 'bad_lhs') {
+                    banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Kontrollera vänsterledet — funktionen ska skrivas <strong>${f5Current.fnName}(${f5Current.varName}) = ...</strong>.`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+                    return;
+                }
+
+                if (res.status === 'has_unit') {
+                    banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Skriv funktionen utan enheter i formeln — enheterna väljer du i tolkningen.`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+                    return;
+                }
+
+                if (res.status === 'wrong_var_in_expr') {
+                    banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Använd variabeln <strong>${f5Current.varName}</strong> i högerledet så att den stämmer med <strong>${f5Current.fnName}(${f5Current.varName})</strong>.`;
+                    banner.classList.remove('hidden');
+                    nextRow.classList.add('hidden');
+                    return;
+                }
+
+                f5WrongCount++;
+                f5Score = Math.max(0, f5Score - 1);
+                document.getElementById('f5-score').innerText = `Klarade: ${f5Score} / 6`;
+                registerMistakeAction();
+
+                if (f5WrongCount >= 2) revealF5Hint();
+                pulseCalculatorHint();
+
+                const v = f5Current.varName;
+                const m = f5Current.expectedM;
+                const absK = Math.abs(f5Current.expectedK);
+                let diagnostic = `Kontrollera startvärdet <strong>${formatSvNum(m)}</strong> (utan <strong>${v}</strong>) och förändringen per enhet (multipliceras med <strong>${v}</strong>).`;
+                if (res.status === 'both_have_var') {
+                    diagnostic = `Du har satt variabeln <strong>${v}</strong> på båda talen — startvärdet <strong>${formatSvNum(m)}</strong> ska stå ensamt utan <strong>${v}</strong>.`;
+                } else if (res.status === 'missing_m') {
+                    diagnostic = `Du har fått med förändringen med <strong>${v}</strong> rätt, men glömt startvärdet <strong>${formatSvNum(m)}</strong> (utan variabel).`;
+                } else if (res.status === 'swapped_km') {
+                    diagnostic = `Du har bytt plats på talen — startvärdet <strong>${formatSvNum(m)}</strong> ska stå ensamt utan <strong>${v}</strong>, och förändringen <strong>${formatSvNum(absK)}</strong> multipliceras med <strong>${v}</strong>.`;
+                } else if (res.status === 'missing_var') {
+                    diagnostic = `Glöm inte variabeln <strong>${v}</strong> på förändringen per enhet — startvärdet <strong>${formatSvNum(m)}</strong> står utan <strong>${v}</strong>, men förändringen behöver ett <strong>${v}</strong>.`;
+                }
+
+                banner.className = "dark:bg-rose-950/90 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> ${diagnostic}`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            // Standard numeric / equation check for compareEqual and diffInterval
+            const res = validateDirectAnswer(userVal, f5Current.validation);
 
             if (res.status === 'ok') {
-                f5CalcSolved = true;
                 registerCorrectAction();
                 input.disabled = true;
-                input.blur();
                 document.getElementById('f5-submit-btn').disabled = true;
 
-                document.getElementById('f5-interpret-prompt').classList.remove('hidden');
-                document.getElementById('f5-interpret-box').classList.remove('hidden');
+                banner.className = "dark:bg-emerald-950/90 bg-emerald-100 border border-emerald-500 rounded-xl p-3 text-sm dark:text-emerald-200 text-emerald-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> <strong>Rätt!</strong> (${f5Current.ansDisplay}) Välj nu rätt tolkning ovan.`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                showF5InterpretationStep();
+                return;
+            }
 
-                banner.className = "dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-3 text-sm dark:text-emerald-200 text-emerald-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> <strong>Rätt beräknat!</strong> (${f5Current.ansStr}) Välj nu rätt tolkning ovan.`;
+            if (res.status === 'missing_lhs') {
+                banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Skriv hela svaret med likhetstecken: <strong>${f5Current.varName} = ...</strong>.`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
-            if (res.status === 'bad_unit') {
-                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-scale-balanced text-amber-500 mr-1"></i> ${res.msg}`;
+            if (res.status === 'bad_lhs' || res.status === 'wrong_var') {
+                banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Kontrollera vänsterledet — här söker du <strong>${f5Current.varName} = ...</strong>.`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            if (res.status === 'unsimplified_expr') {
+                banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Räkna ut uttrycket till ett enda tal.`;
+                banner.classList.remove('hidden');
+                nextRow.classList.add('hidden');
+                return;
+            }
+
+            if (res.status === 'has_unit' || res.status === 'bad_unit') {
+                banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> ${res.msg}`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
@@ -2960,22 +4218,11 @@
             document.getElementById('f5-score').innerText = `Klarade: ${f5Score} / 6`;
             registerMistakeAction();
 
-            if (f5WrongCount >= 2) {
-                revealF5Hint();
-            }
-
+            if (f5WrongCount >= 2) revealF5Hint();
             pulseCalculatorHint();
-            let hint = "";
-            if (f5Current.subtype === 'compareIntersection') {
-                hint = `Sätt de två kostnaderna lika med varandra (<strong>K₁(x) = K₂(x)</strong>) och lös ekvationen för <strong>x</strong>.`;
-            } else if (f5Current.subtype === 'compareDiff') {
-                hint = `Beräkna kostnaden för båda alternativen vid det givna antalet pass och ta skillnaden mellan dem.`;
-            } else {
-                hint = `Beräkna funktionsvärdet vid båda tidpunkterna och räkna ut hur mycket som har minskat däremellan.`;
-            }
 
-            banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
-            msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1"></i> ${hint}`;
+            banner.className = "dark:bg-rose-950/90 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
+            msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> Inte riktigt. Kontrollera din beräkning och prova igen!`;
             banner.classList.remove('hidden');
             nextRow.classList.add('hidden');
         }
@@ -2983,6 +4230,8 @@
         function answerF5Interpretation(idx) {
             if (!f5Current || !f5CalcSolved || f5Answered) return;
             const chosen = f5Current.meaningOptions[idx];
+            if (!chosen) return;
+
             const btn = document.getElementById(`f5-mopt-${idx}`);
             const banner = document.getElementById('f5-feedback-banner');
             const msg = document.getElementById('f5-feedback-msg');
@@ -2994,14 +4243,14 @@
                 registerCorrectAction();
                 document.getElementById('f5-score').innerText = `Klarade: ${f5Score} / 6`;
 
-                btn.className = "w-full text-left px-3 py-2 rounded-lg border-2 border-emerald-500 bg-emerald-500 text-slate-950 text-sm font-semibold transition leading-snug";
                 f5Current.meaningOptions.forEach((_, i) => {
                     const b = document.getElementById(`f5-mopt-${i}`);
                     if (b) b.disabled = true;
                 });
+                btn.className = "w-full text-left px-3 py-2 rounded-lg border-2 border-emerald-500 bg-emerald-500 text-slate-950 text-xs sm:text-sm font-semibold transition leading-snug flex items-center gap-2.5";
 
-                banner.className = "dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-3 text-sm dark:text-emerald-200 text-emerald-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1"></i> <strong>Helt rätt!</strong> ${f5Current.ansStr} — ${chosen.text}`;
+                banner.className = "dark:bg-emerald-950/90 bg-emerald-100 border border-emerald-500 rounded-xl p-3 text-sm dark:text-emerald-200 text-emerald-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> <strong>Helt rätt!</strong> ${chosen.text}`;
                 banner.classList.remove('hidden');
 
                 if (f5Score >= 6 && !f5MilestoneShown) {
@@ -3014,11 +4263,11 @@
                 document.getElementById('f5-score').innerText = `Klarade: ${f5Score} / 6`;
                 registerMistakeAction();
 
-                btn.className = "w-full text-left px-3 py-2 rounded-lg border border-rose-500 bg-rose-500/20 dark:text-rose-300 text-rose-800 text-sm font-normal transition leading-snug";
                 btn.disabled = true;
+                btn.className = "w-full text-left px-3 py-2 rounded-lg border border-rose-500 bg-rose-500/20 dark:text-rose-300 text-rose-800 text-xs sm:text-sm font-normal opacity-80 leading-snug flex items-center gap-2.5";
 
-                banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1"></i> Inte riktigt — läs noggrant vad variablerna står för i uppgiftstexten.`;
+                banner.className = "dark:bg-rose-950/90 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> Inte riktigt — läs noggrant vilket tal som anger tid/antal och vilket tal som anger kostnad/volym. Prova igen!`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
             }
@@ -3035,16 +4284,33 @@
             nextF5Question();
         }
 
-        /* ---------------- INPUT LISTENERS & INIT ---------------- */
-        function setupInputListeners() {
-            ['d2-single-input', 'f5-input-ans'].forEach(attachSmartMathInput);
+        /* ---------------- INIT & INPUT ENTER LISTENERS ---------------- */
+        window.addEventListener('resize', () => {
+            if (activeTab === 0) { resizeCanvas('demo-canvas'); drawDemoCanvas(); }
+        });
 
-            document.getElementById('d2-single-input').addEventListener('keydown', (e) => {
+        window.addEventListener('DOMContentLoaded', () => {
+            resizeCanvas('demo-canvas');
+            setupDemoCanvasEvents();
+            selectDemoScenario('surfbrada');
+
+            attachSmartMathInput('d2-input-a');
+            attachSmartMathInput('d2-input-b');
+            attachSmartMathInput('f5-input-ans');
+
+            document.getElementById('d2-input-a').addEventListener('keydown', (e) => {
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (d2QuestionCompleted) generateNextDirectWorksheet();
-                    else checkD2SingleAnswer();
+                    if (!d2SolvedA) checkD2PartA();
+                }
+            });
+
+            document.getElementById('d2-input-b').addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (d2InterpretedA && !d2SolvedB) checkD2PartB();
                 }
             });
 
@@ -3052,28 +4318,10 @@
                 if (e.key === 'Enter') {
                     e.preventDefault();
                     e.stopPropagation();
-                    checkF5Answer();
+                    if (!f5CalcSolved) checkF5Answer();
                 }
             });
-        }
-
-        window.onload = function() {
-            window.addEventListener('resize', () => {
-                if (activeTab === 0) { resizeCanvas('demo-canvas'); drawDemoCanvas(); }
-            });
-
-            updateCalcUI();
-            setupDemoCanvasEvents();
-            setupInputListeners();
-
-            nextFas0Question();
-            generateNextDirectWorksheet();
-            nextFas1Question();
-            nextF5Question();
-
-            resizeCanvas('demo-canvas');
-            selectDemoScenario('surfbrada');
-        };
+        });
     </script>
 </body>
 </html>
