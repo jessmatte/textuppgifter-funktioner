@@ -1106,9 +1106,9 @@
                 id: 'temperatur',
                 direction: 'inc',
                 fnName: 'T',
-                varName: 't',
-                intro: (k, m) => `Temperaturen T(t) °C i en ugn efter t minuter ges av T(t) = ${formatSvNum(k)}t + ${formatSvNum(m)}.`,
-                exprStr: (k, m) => `${formatSvNum(k)}t + ${formatSvNum(m)}`,
+                varName: 'x',
+                intro: (k, m) => `Temperaturen T(x) °C i en ugn efter x minuter ges av T(x) = ${formatSvNum(k)}x + ${formatSvNum(m)}.`,
+                exprStr: (k, m) => `${formatSvNum(k)}x + ${formatSvNum(m)}`,
                 unitSing: 'minut',
                 unitPlur: 'minuter',
                 xUnits: ['minut', 'minuter', 'min'],
@@ -1122,14 +1122,14 @@
                     { k: 15, m: 25 }
                 ],
                 xRange: [3, 4, 5, 6, 8, 10],
-                askForYText: (t) => `Vilken temperatur har ugnen efter ${t} minuter?`,
+                askForYText: (x) => `Vilken temperatur har ugnen efter ${x} minuter?`,
                 askForXText: (y) => `Efter hur många minuter når ugnen temperaturen ${formatSvNum(y)} °C?`,
                 askStartText: `Vilken starttemperatur har ugnen när den sätts på?`,
                 askZeroText: null,
-                meaningGivenX: (t, y) => t === 0
-                    ? `Starttemperaturen i ugnen när t = 0 är ${formatSvNum(y)} °C.`
-                    : `Efter ${t} minuter är temperaturen i ugnen ${formatSvNum(y)} °C.`,
-                meaningGivenY: (t, y) => `Det tar ${t} minuter för ugnen att nå ${formatSvNum(y)} °C.`,
+                meaningGivenX: (x, y) => x === 0
+                    ? `Starttemperaturen i ugnen när x = 0 är ${formatSvNum(y)} °C.`
+                    : `Efter ${x} minuter är temperaturen i ugnen ${formatSvNum(y)} °C.`,
+                meaningGivenY: (x, y) => `Det tar ${x} minuter för ugnen att nå ${formatSvNum(y)} °C.`,
                 rateMeaning: (k) => `Temperaturen stiger med ${formatSvNum(k)} °C per minut.`,
                 zeroQuestion: null
             },
@@ -3830,9 +3830,9 @@
                         fnName: 'V',
                         varName: 't',
                         scenarioText: `Två vattentankar töms samtidigt. Volymen i tank A ges av V_A(t) = ${p.mA} ${MINUS} ${p.kA}t liter och volymen i tank B ges av V_B(t) = ${p.mB} ${MINUS} ${p.kB}t liter efter t minuter.`,
-                        promptTitle: `Efter hur många minuter t innehåller båda tankarna exakt lika mycket vatten?`,
+                        promptTitle: `Efter hur många minuter t finns det exakt lika mycket vatten kvar i båda tankarna?`,
                         formatHint: `Svara med t = ...:`,
-                        hintText: `Sätt volymerna lika: ${p.mA} ${MINUS} ${p.kA}t = ${p.mB} ${MINUS} ${p.kB}t och lös ut t.`,
+                        hintText: `Sätt V_A(t) = V_B(t), alltså ${p.mA} ${MINUS} ${p.kA}t = ${p.mB} ${MINUS} ${p.kB}t, och lös ut t.`,
                         ansDisplay: `t = ${p.t} minuter`,
                         validation: {
                             requireEquals: true,
@@ -3846,9 +3846,9 @@
                             countable: false
                         },
                         meaningOptions: shuffleOptions([
-                            { text: `Efter ${p.t} minuter innehåller båda tankarna ${formatSvNum(vol)} liter vatten var.`, isCorrect: true },
-                            { text: `Efter ${formatSvNum(vol)} minuter innehåller båda tankarna ${p.t} liter vatten.`, isCorrect: false },
-                            { text: `Båda tankarna är helt tomma efter ${p.t} minuter.`, isCorrect: false }
+                            { text: `Efter ${p.t} minuter innehåller båda tankarna lika mycket vatten (${formatSvNum(vol)} liter).`, isCorrect: true },
+                            { text: `Efter ${formatSvNum(vol)} minuter är båda tankarna helt tomma.`, isCorrect: false },
+                            { text: `Tank A töms på ${p.t} minuter.`, isCorrect: false }
                         ])
                     };
                 }
@@ -3856,119 +3856,163 @@
 
             if (cType === 'diffInterval') {
                 if (Math.random() < 0.5) {
-                    const k = pickRandom([15, 20, 25]);
-                    const m = pickRandom([600, 750, 800]);
-                    const t1 = pickRandom([4, 6]);
-                    const t2 = t1 + pickRandom([6, 8]);
-                    const diff = k * (t2 - t1);
+                    const inst = createRandomLinearInstance('temperatur', false, 'dec');
+                    const { tpl, k, m } = inst;
+                    const absK = Math.abs(k);
+                    const rootX = m / absK;
+                    const t1 = Math.max(1, Math.floor(rootX * 0.25));
+                    const t2 = Math.min(rootX - 1, t1 + pickRandom([3, 4, 5]));
+                    const diffVal = absK * (t2 - t1);
+
                     return {
                         cType: 'diffInterval',
                         isFormula: false,
-                        fnName: 'V',
-                        varName: 't',
-                        scenarioText: `Volymen vatten i en bassäng ges av V(t) = ${m} + ${k}t liter, där t är tiden i minuter efter att påfyllningen startade.`,
-                        promptTitle: `Hur många liter vatten fylls på i bassängen mellan t = ${t1} och t = ${t2} minuter (beräkna V(${t2}) ${MINUS} V(${t1}))?`,
-                        formatHint: `Skriv ditt svar (t.ex. ${diff} liter):`,
-                        hintText: `Beräkna V(${t2}) = ${m} + ${k} · ${t2} och V(${t1}) = ${m} + ${k} · ${t1}, och ta sedan skillnaden V(${t2}) ${MINUS} V(${t1}).`,
-                        ansDisplay: `${diff} liter`,
+                        fnName: tpl.fnName,
+                        varName: tpl.varName,
+                        scenarioText: tpl.intro(k, m),
+                        promptTitle: `Beräkna ${tpl.fnName}(${t1}) ${MINUS} ${tpl.fnName}(${t2}).`,
+                        formatHint: `Skriv ditt svar (endast talet):`,
+                        hintText: `Beräkna först ${tpl.fnName}(${t1}) = ${m - absK * t1} och ${tpl.fnName}(${t2}) = ${m - absK * t2}, och ta sedan skillnaden ${tpl.fnName}(${t1}) ${MINUS} ${tpl.fnName}(${t2}).`,
+                        ansDisplay: `${formatSvNum(diffVal)} ${tpl.yDisplayUnit}`,
                         validation: {
                             requireEquals: false,
                             expectedLhsList: [],
                             wrongLhsPrefixes: [],
-                            expectedNum: diff,
+                            expectedNum: diffVal,
                             forbidUnit: false,
-                            validUnits: ['liter', 'l'],
-                            unitPlural: 'liter',
-                            displayUnit: 'liter',
+                            validUnits: tpl.yUnits,
+                            unitPlural: tpl.yDisplayUnit,
+                            displayUnit: tpl.yDisplayUnit,
                             countable: false
                         },
                         meaningOptions: shuffleOptions([
-                            { text: `Under de ${t2 - t1} minuterna mellan t = ${t1} och t = ${t2} ökar volymen med ${diff} liter.`, isCorrect: true },
-                            { text: `Efter ${t2} minuter finns det totalt ${diff} liter vatten i bassängen.`, isCorrect: false },
-                            { text: `Det fylls på ${diff} liter vatten varje minut.`, isCorrect: false }
+                            { text: `Mängden minskar med ${formatSvNum(diffVal)} ${tpl.yDisplayUnit} mellan ${t1} och ${t2} ${tpl.unitPlur}.`, isCorrect: true },
+                            { text: `Efter ${t2} ${tpl.unitPlur} finns det ${formatSvNum(diffVal)} ${tpl.yDisplayUnit} kvar.`, isCorrect: false },
+                            { text: `Startvärdet från början var ${formatSvNum(diffVal)} ${tpl.yDisplayUnit}.`, isCorrect: false }
                         ])
                     };
                 } else {
-                    const k = pickRandom([35, 40, 45]);
-                    const m = pickRandom([120, 150, 180]);
-                    const x1 = pickRandom([2, 3]);
-                    const x2 = x1 + pickRandom([4, 5]);
-                    const diff = k * (x2 - x1);
+                    const inst = createRandomLinearInstance('temperatur', false, 'inc');
+                    const { tpl, k, m } = inst;
+                    const x1 = 2;
+                    const x2 = pickRandom([5, 6, 7]);
+                    const diffVal = k * (x2 - x1);
+
                     return {
                         cType: 'diffInterval',
                         isFormula: false,
-                        fnName: 'K',
-                        varName: 'x',
-                        scenarioText: `Kostnaden K(x) kr för att hyra ett släp i x timmar ges av K(x) = ${k}x + ${m}.`,
-                        promptTitle: `Hur mycket dyrare blir det att hyra släpet i ${x2} timmar jämfört med ${x1} timmar (beräkna K(${x2}) ${MINUS} K(${x1}))?`,
-                        formatHint: `Skriv ditt svar (t.ex. ${diff} kr):`,
-                        hintText: `Beräkna K(${x2}) = ${k} · ${x2} + ${m} och K(${x1}) = ${k} · ${x1} + ${m}, och subtrahera sedan K(${x2}) ${MINUS} K(${x1}).`,
-                        ansDisplay: `${diff} kr`,
+                        fnName: tpl.fnName,
+                        varName: tpl.varName,
+                        scenarioText: tpl.intro(k, m),
+                        promptTitle: `Beräkna ${tpl.fnName}(${x2}) ${MINUS} ${tpl.fnName}(${x1}).`,
+                        formatHint: `Skriv ditt svar (endast talet):`,
+                        hintText: `Beräkna ${tpl.fnName}(${x2}) = ${k * x2 + m} och ${tpl.fnName}(${x1}) = ${k * x1 + m}, och beräkna sedan skillnaden ${tpl.fnName}(${x2}) ${MINUS} ${tpl.fnName}(${x1}).`,
+                        ansDisplay: `${formatSvNum(diffVal)} ${tpl.yDisplayUnit}`,
                         validation: {
                             requireEquals: false,
                             expectedLhsList: [],
                             wrongLhsPrefixes: [],
-                            expectedNum: diff,
+                            expectedNum: diffVal,
                             forbidUnit: false,
-                            validUnits: ['kr', 'kronor'],
-                            unitPlural: 'kr',
-                            displayUnit: 'kr',
+                            validUnits: tpl.yUnits,
+                            unitPlural: tpl.yDisplayUnit,
+                            displayUnit: tpl.yDisplayUnit,
                             countable: false
                         },
                         meaningOptions: shuffleOptions([
-                            { text: `De ${x2 - x1} extra timmarna kostar sammanlagt ${diff} kr mer.`, isCorrect: true },
-                            { text: `Att hyra släpet i ${x2} timmar kostar totalt ${diff} kr.`, isCorrect: false },
-                            { text: `Startavgiften för att hyra släpet är ${diff} kr.`, isCorrect: false }
+                            { text: `Värdet ökar med ${formatSvNum(diffVal)} ${tpl.yDisplayUnit} när man går från ${x1} till ${x2} ${tpl.unitPlur}.`, isCorrect: true },
+                            { text: `Totalt efter ${x2} ${tpl.unitPlur} blir värdet ${formatSvNum(diffVal)} ${tpl.yDisplayUnit}.`, isCorrect: false },
+                            { text: `Startavgiften är ${formatSvNum(diffVal)} ${tpl.yDisplayUnit}.`, isCorrect: false }
                         ])
                     };
                 }
             }
 
-            // Type 3: twoStepModel — Write a function from TWO points / step-by-step scenario
-            if (Math.random() < 0.5) {
-                const startFee = pickRandom([200, 250, 300]);
-                const hourly = pickRandom([350, 400, 450]);
-                const hoursGiven = 3;
-                const totalGiven = startFee + hourly * hoursGiven;
+            // Type 3: Two-step function modeling from two data points (k and m must be deduced)
+            const variant = Math.floor(Math.random() * 3);
+            if (variant === 0) {
+                const presets = [
+                    { m: 250, k: 80, x1: 2, x2: 5 },
+                    { m: 300, k: 70, x1: 2, x2: 6 },
+                    { m: 180, k: 90, x1: 3, x2: 7 },
+                    { m: 200, k: 110, x1: 2, x2: 5 }
+                ];
+                const p = pickRandom(presets);
+                const y1 = p.m + p.k * p.x1;
+                const y2 = p.m + p.k * p.x2;
+                return {
+                    cType: 'twoStepModel',
+                    isFormula: true,
+                    fnName: 'K',
+                    varName: 'x',
+                    expectedK: p.k,
+                    expectedM: p.m,
+                    scenarioText: `Ett gym tar ut en fast startavgift och en fast månadsavgift. Efter ${p.x1} månader har en medlem betalat totalt ${formatSvNum(y1)} kr, och efter ${p.x2} månader har medlemmen betalat totalt ${formatSvNum(y2)} kr.`,
+                    promptTitle: `Skriv en linjär funktion K(x) som beskriver den totala kostnaden i kronor efter x månader.`,
+                    formatHint: `Skriv formeln K(x) = ...:`,
+                    hintText: `Skillnaden på ${p.x2 - p.x1} månader är ${formatSvNum(y2 - y1)} kr, så månadsavgiften är k = ${p.k} kr/mån. Då blir startavgiften m = ${formatSvNum(y1)} ${MINUS} ${p.x1} · ${p.k} = ${p.m} kr.`,
+                    ansDisplay: `K(x) = ${p.k}x + ${p.m}`,
+                    meaningOptions: shuffleOptions([
+                        { text: `Startavgiften är ${p.m} kr och kostnaden ökar med ${p.k} kr per månad.`, isCorrect: true },
+                        { text: `Startavgiften är ${p.k} kr och kostnaden ökar med ${p.m} kr per månad.`, isCorrect: false },
+                        { text: `Efter ${p.m} månader är totala kostnaden ${p.k} kr.`, isCorrect: false }
+                    ])
+                };
+            } else if (variant === 1) {
+                const presets = [
+                    { m: 200, k: 350, x1: 2, x2: 5 },
+                    { m: 150, k: 400, x1: 3, x2: 6 },
+                    { m: 300, k: 250, x1: 2, x2: 6 },
+                    { m: 240, k: 300, x1: 2, x2: 5 }
+                ];
+                const p = pickRandom(presets);
+                const y1 = p.m + p.k * p.x1;
+                const y2 = p.m + p.k * p.x2;
                 return {
                     cType: 'twoStepModel',
                     isFormula: true,
                     fnName: 'K',
                     varName: 't',
-                    expectedK: hourly,
-                    expectedM: startFee,
-                    scenarioText: `En tekniker tar ${startFee} kr i fast framkörningsavgift samt en fast timkostnad. Ett uppdrag som tog ${hoursGiven} timmar kostade sammanlagt ${formatSvNum(totalGiven)} kr.`,
-                    promptTitle: `Bestäm timkostnaden och skriv funktionen K(t) för den totala kostnaden i kronor efter t timmar.`,
-                    formatHint: `Skriv hela funktionen K(t) = ...:`,
-                    hintText: `Dra först bort framkörningsavgiften: ${formatSvNum(totalGiven)} ${MINUS} ${startFee} = ${formatSvNum(totalGiven - startFee)} kr för ${hoursGiven} timmar, vilket ger ${hourly} kr/timme. Då blir K(t) = ${hourly}t + ${startFee}.`,
-                    ansDisplay: `K(t) = ${hourly}t + ${startFee}`,
+                    expectedK: p.k,
+                    expectedM: p.m,
+                    scenarioText: `En hantverkare tar en fast framkörningsavgift plus ett fast timpris. Ett arbete på ${p.x1} timmar kostar ${formatSvNum(y1)} kr, och ett arbete på ${p.x2} timmar kostar ${formatSvNum(y2)} kr.`,
+                    promptTitle: `Skriv en linjär funktion K(t) som anger totala kostnaden i kronor för ett arbete på t timmar.`,
+                    formatHint: `Skriv formeln K(t) = ...:`,
+                    hintText: `Skillnaden på ${p.x2 - p.x1} timmar är ${formatSvNum(y2 - y1)} kr, vilket ger timpriset k = ${p.k} kr/timme. Framkörningsavgiften blir m = ${formatSvNum(y1)} ${MINUS} ${p.x1} · ${p.k} = ${p.m} kr.`,
+                    ansDisplay: `K(t) = ${p.k}t + ${p.m}`,
                     meaningOptions: shuffleOptions([
-                        { text: `Startavgiften är ${startFee} kr (vid t = 0) och kostnaden ökar med ${hourly} kr per timme.`, isCorrect: true },
-                        { text: `Startavgiften är ${hourly} kr och kostnaden ökar med ${startFee} kr per timme.`, isCorrect: false },
-                        { text: `Efter ${startFee} timmar kostar uppdraget ${hourly} kr.`, isCorrect: false }
+                        { text: `Framkörningsavgiften är ${p.m} kr och timpriset är ${p.k} kr per timme.`, isCorrect: true },
+                        { text: `Framkörningsavgiften är ${p.k} kr och timpriset är ${p.m} kr per timme.`, isCorrect: false },
+                        { text: `Efter ${p.m} timmar kostar arbetet ${p.k} kr.`, isCorrect: false }
                     ])
                 };
             } else {
-                const m = pickRandom([600, 750, 900]);
-                const rate = pickRandom([25, 30, 40]);
-                const tGiven = 4;
-                const remGiven = m - rate * tGiven;
+                const presets = [
+                    { m: 600, k: -30, t1: 4, t2: 10 },
+                    { m: 500, k: -25, t1: 4, t2: 12 },
+                    { m: 720, k: -40, t1: 3, t2: 9 },
+                    { m: 480, k: -20, t1: 4, t2: 10 }
+                ];
+                const p = pickRandom(presets);
+                const absK = Math.abs(p.k);
+                const y1 = p.m - absK * p.t1;
+                const y2 = p.m - absK * p.t2;
                 return {
                     cType: 'twoStepModel',
                     isFormula: true,
                     fnName: 'V',
                     varName: 't',
-                    expectedK: -rate,
-                    expectedM: m,
-                    scenarioText: `En vattentank innehöll ${m} liter vatten från början och töms med konstant hastighet. Efter ${tGiven} minuter finns det ${remGiven} liter vatten kvar i tanken.`,
-                    promptTitle: `Bestäm tömningshastigheten och skriv funktionen V(t) för antalet liter vatten kvar efter t minuter.`,
-                    formatHint: `Skriv hela funktionen V(t) = ...:`,
-                    hintText: `På ${tGiven} minuter har det runnit ut ${m} ${MINUS} ${remGiven} = ${m - remGiven} liter, alltså ${rate} liter/minut. Då blir V(t) = ${m} ${MINUS} ${rate}t.`,
-                    ansDisplay: `V(t) = ${m} ${MINUS} ${rate}t`,
+                    expectedK: p.k,
+                    expectedM: p.m,
+                    scenarioText: `En vattentank töms med konstant hastighet. Efter ${p.t1} minuter finns det ${formatSvNum(y1)} liter kvar i tanken, och efter ${p.t2} minuter finns det ${formatSvNum(y2)} liter kvar.`,
+                    promptTitle: `Skriv en linjär funktion V(t) som visar volymen vatten i liter kvar efter t minuter.`,
+                    formatHint: `Skriv formeln V(t) = ...:`,
+                    hintText: `På ${p.t2 - p.t1} minuter minskar volymen med ${formatSvNum(y1 - y2)} liter, dvs. ${absK} liter/min. Startvolymen blir m = ${formatSvNum(y1)} + ${p.t1} · ${absK} = ${p.m} liter.`,
+                    ansDisplay: `V(t) = ${p.m} ${MINUS} ${absK}t`,
                     meaningOptions: shuffleOptions([
-                        { text: `Tanken börjar med ${m} liter vatten och minskar med ${rate} liter per minut.`, isCorrect: true },
-                        { text: `Tanken börjar med ${rate} liter vatten och fylls på med ${m} liter per minut.`, isCorrect: false },
-                        { text: `Efter ${rate} minuter finns det ${m} liter vatten kvar i tanken.`, isCorrect: false }
+                        { text: `Tanken innehöll ${p.m} liter från början och töms med ${absK} liter per minut.`, isCorrect: true },
+                        { text: `Tanken innehöll ${absK} liter från början och fylls på med ${p.m} liter per minut.`, isCorrect: false },
+                        { text: `Efter ${p.m} minuter finns det ${absK} liter vatten kvar.`, isCorrect: false }
                     ])
                 };
             }
@@ -3984,34 +4028,33 @@
             document.getElementById('f5-title').innerText = f5Current.promptTitle;
             document.getElementById('f5-format-hint').innerText = f5Current.formatHint;
 
-            const btnFn = document.getElementById('f5-btn-fn');
-            const btnVar = document.getElementById('f5-btn-var');
+            const fnBtn = document.getElementById('f5-btn-fn');
+            const varBtn = document.getElementById('f5-btn-var');
             if (f5Current.isFormula) {
-                btnFn.innerText = `${f5Current.fnName}(${f5Current.varName}) =`;
-                btnFn.classList.remove('hidden');
-                btnVar.classList.add('hidden');
+                fnBtn.innerText = `${f5Current.fnName}(${f5Current.varName}) =`;
+                fnBtn.classList.remove('hidden');
+                varBtn.classList.add('hidden');
             } else if (f5Current.cType === 'compareEqual') {
-                btnFn.classList.add('hidden');
-                btnVar.innerText = `${f5Current.varName} =`;
-                btnVar.classList.remove('hidden');
+                fnBtn.classList.add('hidden');
+                varBtn.innerText = `${f5Current.varName} =`;
+                varBtn.classList.remove('hidden');
             } else {
-                btnFn.classList.add('hidden');
-                btnVar.classList.add('hidden');
+                fnBtn.classList.add('hidden');
+                varBtn.classList.add('hidden');
             }
-
-            document.getElementById('f5-hint-box').classList.add('hidden');
-            document.getElementById('f5-hint-btn').classList.remove('hidden');
-            document.getElementById('f5-interpret-prompt').classList.add('hidden');
-            document.getElementById('f5-interpret-box').classList.add('hidden');
 
             const inp = document.getElementById('f5-input-ans');
             inp.value = '';
             inp.disabled = false;
             document.getElementById('f5-submit-btn').disabled = false;
 
+            document.getElementById('f5-hint-box').classList.add('hidden');
+            document.getElementById('f5-hint-btn').classList.remove('hidden');
+            document.getElementById('f5-interpret-prompt').classList.add('hidden');
+            document.getElementById('f5-interpret-box').classList.add('hidden');
             document.getElementById('f5-feedback-banner').classList.add('hidden');
-            document.getElementById('f5-next-row').classList.add('hidden');
             document.getElementById('f5-celebration-banner').classList.add('hidden');
+            document.getElementById('f5-next-row').classList.add('hidden');
 
             if (activeTab === 4) inp.focus();
         }
@@ -4024,26 +4067,29 @@
         }
 
         function insertF5FuncPrefix() {
-            if (!f5Current) return;
             const input = document.getElementById('f5-input-ans');
-            if (input.disabled) return;
-            if (f5Current.isFormula) {
-                input.value = `${f5Current.fnName}(${f5Current.varName}) = `;
-                input.focus();
-                input.setSelectionRange(input.value.length, input.value.length);
-            }
+            if (!f5Current || input.disabled) return;
+            input.value = `${f5Current.fnName}(${f5Current.varName}) = `;
+            input.focus();
+            input.setSelectionRange(input.value.length, input.value.length);
         }
 
         function insertF5VarPrefix() {
-            if (!f5Current) return;
             const input = document.getElementById('f5-input-ans');
-            if (input.disabled) return;
+            if (!f5Current || input.disabled) return;
             input.value = `${f5Current.varName} = `;
             input.focus();
         }
 
-        function showF5InterpretationStep() {
+        function revealF5MeaningStep(banner, msg, nextRow, confirmText) {
             f5CalcSolved = true;
+            registerCorrectAction();
+
+            const inp = document.getElementById('f5-input-ans');
+            inp.disabled = true;
+            inp.blur();
+            document.getElementById('f5-submit-btn').disabled = true;
+
             document.getElementById('f5-interpret-prompt').classList.remove('hidden');
 
             const box = document.getElementById('f5-meaning-options');
@@ -4056,20 +4102,23 @@
             `).join('');
 
             document.getElementById('f5-interpret-box').classList.remove('hidden');
-            document.getElementById('f5-input-ans').blur();
+            banner.className = "dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-3 text-sm dark:text-emerald-200 text-emerald-950 space-y-2";
+            msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> ${confirmText}`;
+            banner.classList.remove('hidden');
+            nextRow.classList.add('hidden');
         }
 
         function checkF5Answer() {
             if (!f5Current || f5CalcSolved) return;
-            const input = document.getElementById('f5-input-ans');
-            const userVal = input.value.trim();
+
+            const userVal = document.getElementById('f5-input-ans').value.trim();
             const banner = document.getElementById('f5-feedback-banner');
             const msg = document.getElementById('f5-feedback-msg');
             const nextRow = document.getElementById('f5-next-row');
 
             if (!userVal) {
-                banner.className = "dark:bg-rose-950/90 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> Skriv ditt svar innan du rättar.`;
+                banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> Skriv ditt svar i rutan innan du rättar.`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
@@ -4084,53 +4133,37 @@
                 });
 
                 if (res.status === 'ok') {
-                    registerCorrectAction();
-                    input.disabled = true;
-                    document.getElementById('f5-submit-btn').disabled = true;
-
-                    banner.className = "dark:bg-emerald-950/90 bg-emerald-100 border border-emerald-500 rounded-xl p-3 text-sm dark:text-emerald-200 text-emerald-950 space-y-2";
-                    msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> <strong>Rätt funktion!</strong> (${f5Current.ansDisplay}) Välj nu rätt tolkning ovan.`;
-                    banner.classList.remove('hidden');
-                    nextRow.classList.add('hidden');
-                    showF5InterpretationStep();
+                    revealF5MeaningStep(
+                        banner,
+                        msg,
+                        nextRow,
+                        `<strong>Rätt funktion!</strong> (${f5Current.ansDisplay}) Välj nu vad funktionen betyder i sammanhanget.`
+                    );
                     return;
                 }
+
+                const fSig = `${f5Current.fnName}(${f5Current.varName})`;
+                const v = f5Current.varName;
 
                 if (res.status === 'missing_lhs') {
-                    banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
-                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Skriv hela funktionsuttrycket med likhetstecken, t.ex. <strong>${f5Current.fnName}(${f5Current.varName}) = ...</strong>.`;
+                    banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Skriv hela funktionsuttrycket med likhetstecken, t.ex. <strong>${fSig} = ...</strong>.`;
                     banner.classList.remove('hidden');
                     nextRow.classList.add('hidden');
                     return;
                 }
 
-                if (res.status === 'used_y') {
-                    banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
-                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Använd funktionens namn <strong>${f5Current.fnName}(${f5Current.varName})</strong> i stället för <strong>y</strong>.`;
+                if (res.status === 'used_y' || res.status === 'bad_lhs') {
+                    banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Skriv funktionen med <strong>${fSig} = ...</strong> i vänsterledet.`;
                     banner.classList.remove('hidden');
                     nextRow.classList.add('hidden');
                     return;
                 }
 
-                if (res.status === 'bad_lhs') {
-                    banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
-                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Kontrollera vänsterledet — funktionen ska skrivas <strong>${f5Current.fnName}(${f5Current.varName}) = ...</strong>.`;
-                    banner.classList.remove('hidden');
-                    nextRow.classList.add('hidden');
-                    return;
-                }
-
-                if (res.status === 'has_unit') {
-                    banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
-                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Skriv funktionen utan enheter i formeln — enheterna väljer du i tolkningen.`;
-                    banner.classList.remove('hidden');
-                    nextRow.classList.add('hidden');
-                    return;
-                }
-
-                if (res.status === 'wrong_var_in_expr') {
-                    banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
-                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Använd variabeln <strong>${f5Current.varName}</strong> i högerledet så att den stämmer med <strong>${f5Current.fnName}(${f5Current.varName})</strong>.`;
+                if (res.status === 'has_unit' || res.status === 'wrong_var_in_expr') {
+                    banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                    msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Använd bara variabeln <strong>${v}</strong> i formeln (utan enheter).`;
                     banner.classList.remove('hidden');
                     nextRow.classList.add('hidden');
                     return;
@@ -4142,71 +4175,65 @@
                 registerMistakeAction();
 
                 if (f5WrongCount >= 2) revealF5Hint();
-                pulseCalculatorHint();
 
-                const v = f5Current.varName;
-                const m = f5Current.expectedM;
-                const absK = Math.abs(f5Current.expectedK);
-                let diagnostic = `Kontrollera startvärdet <strong>${formatSvNum(m)}</strong> (utan <strong>${v}</strong>) och förändringen per enhet (multipliceras med <strong>${v}</strong>).`;
+                let diag = `Räkna först ut förändringen per steg (k) mellan de två tidpunkterna och bestäm sedan startvärdet (m) vid ${v} = 0.`;
                 if (res.status === 'both_have_var') {
-                    diagnostic = `Du har satt variabeln <strong>${v}</strong> på båda talen — startvärdet <strong>${formatSvNum(m)}</strong> ska stå ensamt utan <strong>${v}</strong>.`;
-                } else if (res.status === 'missing_m') {
-                    diagnostic = `Du har fått med förändringen med <strong>${v}</strong> rätt, men glömt startvärdet <strong>${formatSvNum(m)}</strong> (utan variabel).`;
-                } else if (res.status === 'swapped_km') {
-                    diagnostic = `Du har bytt plats på talen — startvärdet <strong>${formatSvNum(m)}</strong> ska stå ensamt utan <strong>${v}</strong>, och förändringen <strong>${formatSvNum(absK)}</strong> multipliceras med <strong>${v}</strong>.`;
+                    diag = `Du har satt variabeln <strong>${v}</strong> på båda talen — bara förändringen per steg ska multipliceras med <strong>${v}</strong>, medan startvärdet står ensamt.`;
                 } else if (res.status === 'missing_var') {
-                    diagnostic = `Glöm inte variabeln <strong>${v}</strong> på förändringen per enhet — startvärdet <strong>${formatSvNum(m)}</strong> står utan <strong>${v}</strong>, men förändringen behöver ett <strong>${v}</strong>.`;
+                    diag = `Glöm inte variabeln <strong>${v}</strong> framför förändringen per steg!`;
+                } else if (res.status === 'missing_m') {
+                    diag = `Du har lutningen rätt, men glömt startvärdet vid <strong>${v} = 0</strong>!`;
+                } else if (res.status === 'swapped_km') {
+                    diag = `Du har bytt plats på förändringen (k) och startvärdet (m). Förändringen per steg ska stå framför <strong>${v}</strong>.`;
+                } else if (res.status === 'reversed_sub_dec' || res.status === 'wrong_sign_k') {
+                    diag = `Eftersom värdet minskar ska startvärdet stå först följt av minustecken: <strong>${fSig} = m ${MINUS} k${v}</strong>.`;
                 }
 
-                banner.className = "dark:bg-rose-950/90 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> ${diagnostic}`;
+                banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> ${diag}`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
-            // Standard numeric / equation check for compareEqual and diffInterval
             const res = validateDirectAnswer(userVal, f5Current.validation);
 
             if (res.status === 'ok') {
-                registerCorrectAction();
-                input.disabled = true;
-                document.getElementById('f5-submit-btn').disabled = true;
-
-                banner.className = "dark:bg-emerald-950/90 bg-emerald-100 border border-emerald-500 rounded-xl p-3 text-sm dark:text-emerald-200 text-emerald-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> <strong>Rätt!</strong> (${f5Current.ansDisplay}) Välj nu rätt tolkning ovan.`;
-                banner.classList.remove('hidden');
-                nextRow.classList.add('hidden');
-                showF5InterpretationStep();
+                revealF5MeaningStep(
+                    banner,
+                    msg,
+                    nextRow,
+                    `<strong>Rätt beräknat!</strong> (${f5Current.ansDisplay}) Välj nu vad resultatet betyder i sammanhanget.`
+                );
                 return;
             }
 
             if (res.status === 'missing_lhs') {
-                banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Skriv hela svaret med likhetstecken: <strong>${f5Current.varName} = ...</strong>.`;
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Skriv hela svaret med likhetstecken, t.ex. <strong>${f5Current.varName} = ...</strong>.`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
-            if (res.status === 'bad_lhs' || res.status === 'wrong_var') {
-                banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Kontrollera vänsterledet — här söker du <strong>${f5Current.varName} = ...</strong>.`;
+            if (res.status === 'used_y' || res.status === 'bad_lhs') {
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Kontrollera beteckningen — använd variabeln <strong>${f5Current.varName} = ...</strong>.`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
             if (res.status === 'unsimplified_expr') {
-                banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Räkna ut uttrycket till ett enda tal.`;
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> Räkna ut det sista steget till ett enda tal.`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
                 return;
             }
 
             if (res.status === 'has_unit' || res.status === 'bad_unit') {
-                banner.className = "dark:bg-amber-950/90 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
+                banner.className = "dark:bg-amber-950/80 bg-amber-100 border border-amber-500 rounded-xl p-3 text-sm dark:text-amber-200 text-amber-950 space-y-2";
                 msg.innerHTML = `<i class="fa-solid fa-circle-info text-amber-500 mr-1.5"></i> ${res.msg}`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
@@ -4217,21 +4244,24 @@
             f5Score = Math.max(0, f5Score - 1);
             document.getElementById('f5-score').innerText = `Klarade: ${f5Score} / 6`;
             registerMistakeAction();
-
-            if (f5WrongCount >= 2) revealF5Hint();
             pulseCalculatorHint();
 
-            banner.className = "dark:bg-rose-950/90 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
-            msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> Inte riktigt. Kontrollera din beräkning och prova igen!`;
+            if (f5WrongCount >= 2) revealF5Hint();
+
+            const errorMsg = (res.status === 'wrong_var')
+                ? `Kontrollera vilken variabel uppgiften frågar efter — här söker du <strong>${f5Current.varName} = ...</strong>.`
+                : `Inte riktigt — kontrollera ekvationen eller skillnaden mellan funktionsvärdena. Prova igen!`;
+
+            banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
+            msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> ${errorMsg}`;
             banner.classList.remove('hidden');
             nextRow.classList.add('hidden');
         }
 
         function answerF5Interpretation(idx) {
             if (!f5Current || !f5CalcSolved || f5Answered) return;
-            const chosen = f5Current.meaningOptions[idx];
-            if (!chosen) return;
 
+            const chosen = f5Current.meaningOptions[idx];
             const btn = document.getElementById(`f5-mopt-${idx}`);
             const banner = document.getElementById('f5-feedback-banner');
             const msg = document.getElementById('f5-feedback-msg');
@@ -4247,9 +4277,10 @@
                     const b = document.getElementById(`f5-mopt-${i}`);
                     if (b) b.disabled = true;
                 });
+
                 btn.className = "w-full text-left px-3 py-2 rounded-lg border-2 border-emerald-500 bg-emerald-500 text-slate-950 text-xs sm:text-sm font-semibold transition leading-snug flex items-center gap-2.5";
 
-                banner.className = "dark:bg-emerald-950/90 bg-emerald-100 border border-emerald-500 rounded-xl p-3 text-sm dark:text-emerald-200 text-emerald-950 space-y-2";
+                banner.className = "dark:bg-emerald-950/80 bg-emerald-100 border border-emerald-500 rounded-xl p-3 text-sm dark:text-emerald-200 text-emerald-950 space-y-2";
                 msg.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-500 mr-1.5"></i> <strong>Helt rätt!</strong> ${chosen.text}`;
                 banner.classList.remove('hidden');
 
@@ -4266,8 +4297,8 @@
                 btn.disabled = true;
                 btn.className = "w-full text-left px-3 py-2 rounded-lg border border-rose-500 bg-rose-500/20 dark:text-rose-300 text-rose-800 text-xs sm:text-sm font-normal opacity-80 leading-snug flex items-center gap-2.5";
 
-                banner.className = "dark:bg-rose-950/90 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
-                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> Inte riktigt — läs noggrant vilket tal som anger tid/antal och vilket tal som anger kostnad/volym. Prova igen!`;
+                banner.className = "dark:bg-rose-950/80 bg-rose-100 border border-rose-500 rounded-xl p-3 text-sm dark:text-rose-200 text-rose-950 space-y-2";
+                msg.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-500 mr-1.5"></i> Inte riktigt — titta noga på vilken enhet som hör till respektive storhet och prova igen!`;
                 banner.classList.remove('hidden');
                 nextRow.classList.add('hidden');
             }
@@ -4284,42 +4315,46 @@
             nextF5Question();
         }
 
-        /* ---------------- INIT & INPUT ENTER LISTENERS ---------------- */
-        window.addEventListener('resize', () => {
-            if (activeTab === 0) { resizeCanvas('demo-canvas'); drawDemoCanvas(); }
-        });
-
+        /* ---------------- INITIALIZATION ---------------- */
         window.addEventListener('DOMContentLoaded', () => {
             resizeCanvas('demo-canvas');
-            setupDemoCanvasEvents();
             selectDemoScenario('surfbrada');
+            setupDemoCanvasEvents();
+            updateCalcUI();
 
+            // Attach smart math auto-spacing to text inputs
             attachSmartMathInput('d2-input-a');
             attachSmartMathInput('d2-input-b');
             attachSmartMathInput('f5-input-ans');
 
+            // Fas 2 Enter-to-submit for a) and b)
             document.getElementById('d2-input-a').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' && !d2SolvedA) {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (!d2SolvedA) checkD2PartA();
+                    checkD2PartA();
                 }
             });
 
             document.getElementById('d2-input-b').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' && d2InterpretedA && !d2SolvedB) {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (d2InterpretedA && !d2SolvedB) checkD2PartB();
+                    checkD2PartB();
                 }
             });
 
+            // Fas 4 Enter-to-submit
             document.getElementById('f5-input-ans').addEventListener('keydown', (e) => {
-                if (e.key === 'Enter') {
+                if (e.key === 'Enter' && !f5CalcSolved) {
                     e.preventDefault();
                     e.stopPropagation();
-                    if (!f5CalcSolved) checkF5Answer();
+                    checkF5Answer();
                 }
+            });
+
+            window.addEventListener('resize', () => {
+                if (activeTab === 0) { resizeCanvas('demo-canvas'); drawDemoCanvas(); }
             });
         });
     </script>
